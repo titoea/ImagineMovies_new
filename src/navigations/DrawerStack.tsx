@@ -5,7 +5,8 @@ import MainStack from './MainStack';
 import Settings from '../screens/Settings/settings';
 import Help from '../screens/Help/Help';
 import { Text} from 'react-native';
-import { HomeIcon, ReservationsIcon } from '../components/Icons/Icons';
+import { HelpIcon, HomeIcon, ReservationsIcon, SettingsIcon } from '../components/Icons/Icons';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
 
@@ -33,13 +34,21 @@ const CustomDrawerNavigator = function CustomDrawerNavigator(){
     drawerContent={props => (
     <DrawerContentScrollView {...props}>
         <Text> Hello</Text>
-        <DrawerItem label={'Home'} onPress={() => {props.navigation.navigate('Home');}} icon={ ({focused}) => (<HomeIcon/>)}/>
-        <DrawerItem label={'Reservations'} onPress={() => {props.navigation.navigate('Reservations');}} /* icon={({focused}) => (<ReservationsIcon size={20} color={focused ? '#0d2d33' : '#40e2ff' }/>)} *//>
-        <DrawerItem label={'Settings'} onPress={() => {props.navigation.navigate('Settings');}}/>
-        <DrawerItem label={'Help'} onPress={() => {props.navigation.navigate('Help');}}/>
+        <DrawerItem label={'Home'} onPress={() => {props.navigation.navigate('Home');}} icon={ ({focused}) => (<HomeIcon size={20} color={focused ? '#0d2d33' : '#40e2ff' }/>)}/>
+        <DrawerItem label={'Reservations'} onPress={() => {props.navigation.navigate('Reservations');}}  icon={({focused}) => (<ReservationsIcon size={20} color={focused ? '#0d2d33' : '#40e2ff' }/>)}/>
+        <DrawerItem label={'Settings'} onPress={() => {props.navigation.navigate('Settings');}} icon={({focused}) => (<SettingsIcon size={20} color={focused ? '#0d2d33' : '#40e2ff'  }/>)}/>
+        <DrawerItem label={'Help'} onPress={() => {props.navigation.navigate('Help');}} icon={({focused}) => (<HelpIcon size={20} color={focused ? '#0d2d33' : '#40e2ff'  }/>)}/>
     </DrawerContentScrollView>
   )}>
-    <Drawer.Screen name="Home" component={MainStack} />
+    <Drawer.Screen name="Home" component={MainStack} options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? 'TabStack';
+          if (routeName === 'Movie'){
+            return ({swipeEnabled: false });
+          }
+          else {
+            return({headerShown: true, swipeEnabled: true});
+          }
+    }}  />
     <Drawer.Screen name="Reservations" component={Reservations} />
     <Drawer.Screen name="Settings" component={Settings} />
     <Drawer.Screen name="Help" component={Help}/>

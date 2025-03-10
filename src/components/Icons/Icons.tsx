@@ -4,6 +4,8 @@ import HomeSVG from '../../assets/icons/home.svg';
 import ReservationsSVG from '../../assets/icons/reservations.svg';
 import SettingsSVG from '../../assets/icons/settings.svg';
 import HelpSVG from '../../assets/icons/help.svg';
+import PlaySVG from '../../assets/icons/play.svg';
+import PlusSVG from '../../assets/icons/plus.svg';
 import {IconProps} from './interfaces';
 
 export const HamburgerIcon: React.FC<IconProps> = function HamburgerIcon({
@@ -63,6 +65,28 @@ export const HelpIcon: React.FC<IconProps> = function HelpIcon({ color, size, op
     fill={color || 'blue'}
     width={size || 16}
     height={size || 16}
+    opacity={opacity || 1}
+    />
+  );
+};
+
+export const PlayIcon: React.FC<IconProps> = function PlayIcon({color, size, opacity}){
+  return (
+    <PlaySVG
+    fill={color || 'transparent'}
+    width={size || 40}
+    height={size || 40}
+    opacity={opacity || 1}
+    />
+  );
+};
+
+export const PlusIcon: React.FC<IconProps> = function PlusIcon({color, size, opacity}){
+  return (
+    <PlusSVG
+    fill={color || 'transparent'}
+    width={size || 50}
+    height={size || 50}
     opacity={opacity || 1}
     />
   );
