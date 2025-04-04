@@ -3,11 +3,14 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import AppNavigationContainer from './navigations/AppNavigationContainer';
 import AuthProvider from './providers/AuthProvider/AuthProvider';
+import ConfigurationProvider from './providers/ConfigurationProvider/ConfigurationProvider';
 
 const App = () => {
   return (
     <AuthProvider>
+      <ConfigurationProvider>
         <AppNavigationContainer />
+      </ConfigurationProvider>
     </AuthProvider>
   );
 };

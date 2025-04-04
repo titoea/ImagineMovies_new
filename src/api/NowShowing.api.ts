@@ -1,0 +1,62 @@
+import axios, {AxiosError, AxiosRequestConfig} from 'axios';
+import Api, {IAPIResult} from './Api';
+
+
+export interface INowShowingResult {
+    dates: {
+        maximum: string;
+        minimum: string;
+    },
+    page: number;
+    results : {
+        adult: boolean;
+        backdrop_path: string;
+        genre_ids: number[];
+        id: number;
+        original_language: string;
+        original_title: string;
+        overview: string;
+        popularity: number;
+        poster_path: string;
+        release_date: string;
+        title: string;
+        video: boolean;
+        vote_average: number;
+        vote_count: number;
+    }
+    total_pages: number;
+    total_results: number;
+}
+
+export default async function NowShowingAPi(
+  config?: AxiosRequestConfig,
+): Promise<IAPIResult<INowShowingResult[]> | null> {
+  try {
+    const response = await Api.get<{
+      message: string;
+      message_Id: string;
+      succeeded: boolean;
+      data: INowShowingResult[];
+    }>('/movie/now_playing?language=en-US&page=1', {
+      ...config,
+      headers: {...config?.headers},
+    });
+    return Promise.resolve({
+      code: response.status,
+      message: response.data.message,
+      data: response.data.data,
+    });
+  } catch (e) {
+    if (axios.isCancel(e)) {
+      return Promise.resolve(null);
+    }
+    const statusCode = (e as AxiosError).response?.status || 0;
+    const errorMessage =
+      (e as AxiosError).response?.data.message || (e as Error).message;
+    return Promise.resolve({
+      code: statusCode,
+      message: errorMessage,
+      data: undefined,
+    });
+  }
+}
