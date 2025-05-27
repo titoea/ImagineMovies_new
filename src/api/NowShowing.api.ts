@@ -1,14 +1,7 @@
 import axios, {AxiosError, AxiosRequestConfig} from 'axios';
 import Api, {IAPIResult} from './Api';
 
-
-export interface INowShowingResult {
-    dates: {
-        maximum: string;
-        minimum: string;
-    },
-    page: number;
-    results : {
+export interface IResults{
         adult: boolean;
         backdrop_path: string;
         genre_ids: number[];
@@ -23,20 +16,27 @@ export interface INowShowingResult {
         video: boolean;
         vote_average: number;
         vote_count: number;
-    }
+}
+export interface INowShowingResult {
+    dates: {
+        maximum: string;
+        minimum: string;
+    },
+    page: number;
+    results : IResults[]
     total_pages: number;
     total_results: number;
 }
 
 export default async function NowShowingAPi(
   config?: AxiosRequestConfig,
-): Promise<IAPIResult<INowShowingResult[]> | null> {
+): Promise<IAPIResult<INowShowingResult> | null> {
   try {
     const response = await Api.get<{
       message: string;
       message_Id: string;
       succeeded: boolean;
-      data: INowShowingResult[];
+      data: Object;
     }>('/movie/now_playing?language=en-US&page=1', {
       ...config,
       headers: {...config?.headers},
@@ -44,7 +44,7 @@ export default async function NowShowingAPi(
     return Promise.resolve({
       code: response.status,
       message: response.data.message,
-      data: response.data.data,
+      data: response.data,
     });
   } catch (e) {
     if (axios.isCancel(e)) {
