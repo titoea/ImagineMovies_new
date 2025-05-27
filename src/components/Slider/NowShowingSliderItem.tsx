@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { INowShowingSliderItemProps } from './interfaces';
 import { useNavigation } from '@react-navigation/native';
@@ -8,12 +8,14 @@ import { IMainStackParamsList } from '../../navigations/interfaces';
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
 const NowShowingSliderItem : INowShowingSliderItemProps = function NowShowingSliderItem({item}) {
+
     const navigation = useNavigation<StackNavigationProp<IMainStackParamsList>>();
+    const imageBaseURL = 'https://image.tmdb.org';
     return (
         <Pressable onPress={() => navigation.navigate('Movie', {item})}>
         <View style={styles.itemContainer}>
             <Image source={{
-          uri: '',
+          uri: imageBaseURL + '/t/p/w500' + item.poster_path,
         }}style={styles.image}/>
             <Text style={styles.title}>{item.title}</Text>
         </View>
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: 'BebasNeue-Regular',
         fontSize: 20,
-        fontWeight: 400,
+        fontWeight: "400",
         textAlign: 'center',
     },
 });

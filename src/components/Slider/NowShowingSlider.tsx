@@ -2,14 +2,14 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import NowShowingSliderItem from './NowShowingSliderItem';
 import { INowShowingSliderProps } from './interfaces';
-import NowShowingAPi, { INowShowingResult } from '../../api/NowShowing.api';
+import NowShowingAPi, { INowShowingResult, IResults } from '../../api/NowShowing.api';
 import axios, { Canceler } from 'axios';
 import { useConfiguration } from '../../providers/ConfigurationProvider/ConfigurationContext';
 
 const NowShowingSlider:INowShowingSliderProps = function NowShowingSlider () {
     const {configuration} = useConfiguration();
     const cancelHttp = useRef<Canceler>();
-    const [list, setList] = useState<INowShowingResult[]>();
+    const [list, setList] = useState<IResults[]>();
 
     const NowShowingData = useCallback( async () =>{
         const response = await NowShowingAPi({
@@ -21,7 +21,7 @@ const NowShowingSlider:INowShowingSliderProps = function NowShowingSlider () {
           if (!response.data){
             return;
           }
-        return setList(response.data);
+         return setList(response.data.results);
     }, []);
 
     useEffect(() => {
@@ -31,13 +31,12 @@ const NowShowingSlider:INowShowingSliderProps = function NowShowingSlider () {
     },[]);
 
     useEffect(()=>{
-      console.log(configuration);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[]);
+    },[list]);
 
     return (
             <View style={styles.container}>
-                <FlatList data={list} renderItem={({item, index}) => <NowShowingSliderItem item={item.results} index={index} />}
+                <FlatList data={list} renderItem={({item, index}) => <NowShowingSliderItem item={item} index={index} />}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled/>
