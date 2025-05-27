@@ -30,7 +30,7 @@ export default Home;
 const styles = StyleSheet.create({
   headerText:{
     fontFamily: 'AcuminBdPro',
-    fontWeight: 700,
+    fontWeight: "700",
     fontSize: 24,
     marginBottom: 13,
   },
