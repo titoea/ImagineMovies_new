@@ -15,7 +15,7 @@ const Search = function Search(){
         setSearchText(text);
        MovieSlider.map((item) => {
            if(item.title.toLowerCase().includes(text.toLowerCase())){
-                return console.log(item.title);
+                //return console.log(item.title);
            };
         });
     },[]);

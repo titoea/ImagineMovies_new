@@ -12,15 +12,13 @@ const ConfigurationProvider: IConfigurationProviderProps = function Configuratio
 
   const fetchConfiguration = useCallback(
         async () =>{
-            const response = await MovieDatabaseConfigurationAPi({
-                cancelToken: new axios.CancelToken(c => (cancelHttp.current = c)),
-              },);
+            const response = await MovieDatabaseConfigurationAPi();
               if (!response){
-                console.log('no response');
+                //console.log('no response');
                 return;
               }
               if (!response.data){
-                console.log(response);
+                //console.log(response);
                 return;
               }
             return setConfiguration(response.data);
