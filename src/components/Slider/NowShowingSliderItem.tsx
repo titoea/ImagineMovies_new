@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { INowShowingSliderItemProps } from './interfaces';
 import { useNavigation } from '@react-navigation/native';
@@ -12,7 +12,7 @@ const NowShowingSliderItem : INowShowingSliderItemProps = function NowShowingSli
     const navigation = useNavigation<StackNavigationProp<IMainStackParamsList>>();
     const imageBaseURL = 'https://image.tmdb.org';
     return (
-        <Pressable onPress={() => navigation.navigate('Movie', {item})}>
+        <Pressable onPress={() => navigation.navigate('Movie', {movieItem: item})}>
         <View style={styles.itemContainer}>
             <Image source={{
           uri: imageBaseURL + '/t/p/w500' + item.poster_path,

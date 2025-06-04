@@ -1,22 +1,52 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { IMovieProps } from './interfaces';
-import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native';
+import { Dimensions, ImageBackground, StyleSheet, View, Text, FlatList } from 'react-native';
 import { PlayIcon, PlusIcon } from '../../components/Icons/Icons';
+import MovieReviewsAPi, { IResults } from '../../api/MovieReviews.Api';
+import axios, { Canceler } from 'axios';
+import Button from '../../components/Button/Button';
+import ReviewItem from '../../components/Reviews/ReviewItem';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
-const Movie: IMovieProps = function Movie({navigation,route: {params : {item}}}){
+const Movie: IMovieProps = function Movie({navigation,route: {params : {movieItem}}}){
+    const cancelHttp = useRef<Canceler>();
+    const [reviews, setReviews] = useState<IResults[]>();
+    const imageBaseURL = 'https://image.tmdb.org';
+
+    const MovieReviews = useCallback( async () =>{
+        const response = await MovieReviewsAPi(movieItem.id,
+            {cancelToken: new axios.CancelToken(c => (cancelHttp.current = c))},
+          );
+          if (!response){
+            return;
+          }
+          if (!response.data){
+            return;
+          }
+          console.log(response.data.results);
+         return setReviews(response.data.results);
+    }, [movieItem.id]);
+
+    useEffect(() => {
+      //initialize list
+      MovieReviews();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[]);
     useEffect(()=>{
         navigation.getParent()?.setOptions({
             headerShown: false,
           });
     },[navigation]);
 
+
     return (
         <ScrollView>
-            <ImageBackground source={item.image} resizeMode='cover' style={styles.image}>
+            <ImageBackground source={{
+          uri: imageBaseURL + '/t/p/w500' + movieItem.poster_path,
+        }} resizeMode='cover' style={styles.image}>
                 <View style={styles.playButton}>
                 <PlayIcon />
                 </View>
@@ -24,6 +54,22 @@ const Movie: IMovieProps = function Movie({navigation,route: {params : {item}}})
                 <PlusIcon />
                 </View>
             </ImageBackground>
+            <View style={styles.rankDateContainer}>
+                <Text style={styles.rankingText}>{movieItem.popularity}</Text>
+                <Text style={styles.dateReleasedText}>{movieItem.release_date}</Text>
+            </View>
+            <View style={styles.synopsisContainer}>
+                <Text style={styles.synopsisTitleText}>SYNOPSIS</Text>
+                <Text style={styles.synopsisText}>{movieItem.overview}</Text>
+            </View>
+            <View style={styles.buttonContainer}>
+                <Button>Get Tickets</Button>
+            </View>
+            <View style={styles.reviewsContainer}>
+                <Text style={styles.reviewsText}>Reviews</Text>
+                <FlatList style={styles.reviewsListContainer} data={reviews} renderItem={({item, index}) => <ReviewItem item={item} index={index} />}
+                pagingEnabled/>
+            </View>
         </ScrollView>
     );
 
@@ -48,5 +94,50 @@ const styles =  StyleSheet.create({
         paddingBottom: 10,
         paddingHorizontal: 10,
         marginLeft: 'auto',
+    },
+    rankDateContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        marginHorizontal: 15,
+        marginTop: 10,
+    },
+    rankingText: {
+        flex: 2,
+        fontSize: 16,
+        fontFamily: 'AcuminRPro',
+    },
+    dateReleasedText: {
+        flex: 5,
+        fontSize: 16,
+        fontFamily: 'AcuminRPro',
+    },
+    synopsisContainer: {
+       flex: 1,
+        marginHorizontal: 15,
+        marginTop: 10,
+    },
+     synopsisTitleText: {
+        fontFamily: 'AcuminRPro',
+        fontSize: 20,
+    },
+    synopsisText: {
+        fontFamily: 'AcuminRPro',
+        fontSize: 16,
+
+    },
+    buttonContainer: {
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    reviewsContainer: {
+        marginHorizontal: 15,
+        marginTop: 10,
+    },
+    reviewsText: {
+        fontFamily: 'AcuminRPro',
+        fontSize: 20,
+    },
+    reviewsListContainer: {
+        marginTop: 10,
     },
 });

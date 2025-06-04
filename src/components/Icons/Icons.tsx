@@ -6,6 +6,7 @@ import SettingsSVG from '../../assets/icons/settings.svg';
 import HelpSVG from '../../assets/icons/help.svg';
 import PlaySVG from '../../assets/icons/play.svg';
 import PlusSVG from '../../assets/icons/plus.svg';
+import AvatarSVG from '../../assets/icons/avatar.svg';
 import {IconProps} from './interfaces';
 
 export const HamburgerIcon: React.FC<IconProps> = function HamburgerIcon({
@@ -84,6 +85,17 @@ export const PlayIcon: React.FC<IconProps> = function PlayIcon({color, size, opa
 export const PlusIcon: React.FC<IconProps> = function PlusIcon({color, size, opacity}){
   return (
     <PlusSVG
+    fill={color || 'transparent'}
+    width={size || 50}
+    height={size || 50}
+    opacity={opacity || 1}
+    />
+  );
+};
+
+export const AvatarIcon: React.FC<IconProps> = function AvatarIcon({color, size, opacity}){
+  return (
+    <AvatarSVG
     fill={color || 'transparent'}
     width={size || 50}
     height={size || 50}
