@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabStack from './TabStack';
 import Movie from '../screens/Movie/movie';
 import { IMainStackParamsList } from './interfaces';
+import MoviePreview from '../screens/MoviePreview/MoviePreview';
 
 const Stack = createNativeStackNavigator<IMainStackParamsList>();
 
@@ -15,6 +16,7 @@ const MainStack = function MainStack() {
         options={{headerShown: false}}
       />
       <Stack.Screen name="Movie" component={Movie} options={{headerShown: false}}/>
+      <Stack.Screen name="MoviePreview" component={MoviePreview} options={{headerShown: false}}/>
     </Stack.Navigator>
   );
 };

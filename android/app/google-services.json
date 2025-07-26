@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "695233446154",
+    "project_id": "imagine-movies-new",
+    "storage_bucket": "imagine-movies-new.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695233446154:android:c39e229339c854b9427af3",
+        "android_client_info": {
+          "package_name": "com.imaginemovies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "695233446154-o86tjcau62b084dknivl3pu7he25mh7l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.imaginemovies",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "695233446154-taulpjofhbk1o0ihjc0u1o8297u7jg09.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwhmmrgwQeXKcb1MSPixRzsOohzwZYKZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "695233446154-taulpjofhbk1o0ihjc0u1o8297u7jg09.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

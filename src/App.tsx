@@ -4,13 +4,16 @@ import {StyleSheet} from 'react-native';
 import AppNavigationContainer from './navigations/AppNavigationContainer';
 import AuthProvider from './providers/AuthProvider/AuthProvider';
 import ConfigurationProvider from './providers/ConfigurationProvider/ConfigurationProvider';
+import UserProvider from './providers/UserProvider/UserProvider';
 
 const App = () => {
   return (
     <AuthProvider>
-      <ConfigurationProvider>
-        <AppNavigationContainer />
-      </ConfigurationProvider>
+      <UserProvider>
+        <ConfigurationProvider>
+          <AppNavigationContainer />
+        </ConfigurationProvider>
+      </UserProvider>
     </AuthProvider>
   );
 };

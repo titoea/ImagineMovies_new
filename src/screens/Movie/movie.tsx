@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { IMovieProps } from './interfaces';
-import { Dimensions, ImageBackground, StyleSheet, View, Text, FlatList } from 'react-native';
+import { Dimensions, ImageBackground, StyleSheet, View, Text, FlatList, Pressable } from 'react-native';
 import { PlayIcon, PlusIcon } from '../../components/Icons/Icons';
 import MovieReviewsAPi, { IResults } from '../../api/MovieReviews.Api';
 import axios, { Canceler } from 'axios';
@@ -30,6 +30,10 @@ const Movie: IMovieProps = function Movie({navigation,route: {params : {movieIte
          return setReviews(response.data.results);
     }, [movieItem.id]);
 
+    const handlePress = useCallback(()=>{
+        return navigation.navigate('MoviePreview',{movie_id: movieItem.id});
+    },[movieItem.id, navigation]);
+
     useEffect(() => {
       //initialize list
       MovieReviews();
@@ -48,7 +52,7 @@ const Movie: IMovieProps = function Movie({navigation,route: {params : {movieIte
           uri: imageBaseURL + '/t/p/w500' + movieItem.poster_path,
         }} resizeMode='cover' style={styles.image}>
                 <View style={styles.playButton}>
-                <PlayIcon />
+                <PlayIcon handlePress={handlePress}/>
                 </View>
                 <View style={styles.plusButton}>
                 <PlusIcon />

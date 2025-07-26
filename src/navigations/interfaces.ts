@@ -26,6 +26,9 @@ export type IMainStackParamsList = {
   Movie: {
     movieItem: movieItemProps;
   };
+  MoviePreview: {
+    movie_id: number;
+  };
 } & ITabStackParamsList;
 
 export type ITabStackParamsList = {

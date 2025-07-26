@@ -8,6 +8,7 @@ import PlaySVG from '../../assets/icons/play.svg';
 import PlusSVG from '../../assets/icons/plus.svg';
 import AvatarSVG from '../../assets/icons/avatar.svg';
 import {IconProps} from './interfaces';
+import { Pressable } from 'react-native';
 
 export const HamburgerIcon: React.FC<IconProps> = function HamburgerIcon({
   color,
@@ -71,14 +72,16 @@ export const HelpIcon: React.FC<IconProps> = function HelpIcon({ color, size, op
   );
 };
 
-export const PlayIcon: React.FC<IconProps> = function PlayIcon({color, size, opacity}){
+export const PlayIcon: React.FC<IconProps> = function PlayIcon({color, size, opacity,handlePress}){
   return (
-    <PlaySVG
-    fill={color || 'transparent'}
-    width={size || 40}
-    height={size || 40}
-    opacity={opacity || 1}
-    />
+    <Pressable onPress={handlePress}>
+      <PlaySVG
+      fill={color || 'transparent'}
+      width={size || 40}
+      height={size || 40}
+      opacity={opacity || 1}
+      />
+    </Pressable>
   );
 };
 

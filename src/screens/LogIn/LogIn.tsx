@@ -32,7 +32,7 @@ const LogIn: ILogInProps = function LogIn({navigation}) {
           </View>
           <View style={styles.endActionsStyle}>
             <View style={styles.checkBoxStyle}>
-              <CheckBox
+              {/* <CheckBox
                 disabled={false}
                 value={toggleCheckBox}
                 boxType="square"
@@ -42,7 +42,7 @@ const LogIn: ILogInProps = function LogIn({navigation}) {
                 onCheckColor="#D9C14A"
                 tintColors={{true: '#161819', false: '#161819'}}
                 onValueChange={newValue => setToggleCheckBox(newValue)}
-              />
+              /> */}
               <Text style={styles.rememberMeText}>Remember me</Text>
             </View>
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
