@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {ImageBackground, Pressable, StyleSheet, Text, View} from 'react-native';
 import Button from '../../components/Button/Button';
 import CustomTextInput from '../../components/CustomTextInput/TextInput';
@@ -50,12 +50,13 @@ const SignUp: ISignUpProps = function SignUp({navigation}) {
               placeholder="Enter your password"
               value={password}
               onChangeText={setPassword}
+              keyboardType='visible-password'
               secureTextEntry
             />
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <Button style={styles.buttonStyle} onPress={() => userContext.signUpWithEmail(email,password)}>Sign Up</Button>
+          <Button style={styles.buttonStyle} onPress={() => userContext.signUpWithEmail(String(email),String(password))}>Sign Up</Button>
           <View style={styles.logInPromptContainer}>
             <Text style={styles.logInPromptText}>
               Already have an account?{' '}

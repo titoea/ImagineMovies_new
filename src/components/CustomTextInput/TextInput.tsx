@@ -11,6 +11,11 @@ const CustomTextInput: ICustomTextInputProps = function CustomTextInput({
         placeholder={props.placeholder}
         style={[props.style, styles.inputContainer]}
         placeholderTextColor="rgba(220, 220, 220, 0.45)"
+        value={props.value}
+        keyboardType={props.keyboardType}
+        onChangeText={props.onChangeText}
+        secureTextEntry={props.secureTextEntry}
+        autoCapitalize={props.autoCapitalize}
       />
     </View>
   );
