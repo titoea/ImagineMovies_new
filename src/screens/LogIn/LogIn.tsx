@@ -17,7 +17,19 @@ const LogIn: ILogInProps = function LogIn({navigation}) {
 
   const handleLogin = useCallback(()=>{
     userContext.loginWithEmail(String(email), String(password));
-  },[email, password, userContext]);
+    return navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [
+                    {name: 'Auth',
+                      params:
+                      {
+                        screen: 'CustomDrawerNavigator',
+                      },
+                    }],
+                }),
+              );
+  },[email, navigation, password, userContext]);
 
   return (
     <View style={styles.rootContainer}>

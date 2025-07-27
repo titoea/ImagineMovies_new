@@ -2,12 +2,11 @@ import React , { useCallback, useEffect, useState } from 'react';
 import { IUserProviderProps } from './interfaces';
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, FirebaseAuthTypes, signInWithEmailAndPassword} from '@react-native-firebase/auth';
 import UserContext from './UserContext';
-import { CommonActions, useNavigation } from '@react-navigation/native';
 
 const UserProvider: IUserProviderProps  = function UserProvider({children}){
     const [initializing, setInitializing] = useState<boolean>(true);
     const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
-    const navigation = useNavigation();
+ 
     const auth = getAuth();
 
     const handleAuthStateChanged = useCallback((authUser: FirebaseAuthTypes.User | null)=>{
@@ -39,13 +38,7 @@ const UserProvider: IUserProviderProps  = function UserProvider({children}){
     const loginWithEmail = useCallback((email: string, password: string) => {
        signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        setUser(userCredential.user)
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{name: 'Home'}],
-              }),
-          );
+        setUser(userCredential.user);
       })
       .catch(error => {
         if (error.code === 'auth/user-not-found') {
