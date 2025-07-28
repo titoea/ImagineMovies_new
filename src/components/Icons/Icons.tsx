@@ -7,6 +7,14 @@ import HelpSVG from '../../assets/icons/help.svg';
 import PlaySVG from '../../assets/icons/play.svg';
 import PlusSVG from '../../assets/icons/plus.svg';
 import AvatarSVG from '../../assets/icons/avatar.svg';
+import PopcornLargeSVG from '../../assets/images/popcorn_large.svg';
+import PopcornMediumSVG from '../../assets/images/popcorn_medium.svg';
+import PopcornSmallSVG from '../../assets/images/popcorn_small.svg';
+import FantaSVG from '../../assets/images/fanta.svg';
+import CokeSVG from '../../assets/images/coke.svg';
+import PepsiSVG from '../../assets/images/pepsi.svg';
+import AddLargeSVG from '../../assets/icons/addLarge.svg';
+import HotDogSVG from '../../assets/images/hotdog.svg';
 import {IconProps} from './interfaces';
 import { Pressable } from 'react-native';
 
@@ -104,5 +112,95 @@ export const AvatarIcon: React.FC<IconProps> = function AvatarIcon({color, size,
     height={size || 50}
     opacity={opacity || 1}
     />
+  );
+};
+
+export const PopcornLargeIcon: React.FC<IconProps> = function PopcornLargeIcon({color, size, opacity}){
+ return (
+  <PopcornLargeSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+  />
+ );
+};
+
+export const PopcornMediumIcon: React.FC<IconProps> = function PopcornMediumIcon({color, size, opacity}){
+ return (
+  <PopcornMediumSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+  />
+ );
+};
+
+export const PopcornSmallIcon: React.FC<IconProps> = function PopcornSmallIcon({color, size, opacity}){
+ return (
+  <PopcornSmallSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+  />
+ );
+};
+
+export const FantaIcon: React.FC<IconProps> = function FantaIcon({color, size, opacity}){
+ return (
+  <FantaSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+  />
+ );
+};
+
+export const CokeIcon: React.FC<IconProps> = function CokeIcon({color, size, opacity}){
+ return (
+  <CokeSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+  />
+ );
+};
+
+export const PepsiIcon: React.FC<IconProps> = function PepsiIcon({color, size, opacity}){
+ return (
+  <PepsiSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+  />
+ );
+};
+
+export const AddLargeIcon: React.FC<IconProps> = function AddLargeIcon({color, size, opacity, handlePress}){
+return (
+  <Pressable onPress={handlePress}>
+    <AddLargeSVG
+     fill={color}
+      width={size}
+      height={size}
+      opacity={opacity}
+    />
+  </Pressable>
+  );
+};
+
+export const HotDogIcon: React.FC<IconProps> = function HotDogIcon({color, size, opacity}){
+return (
+  <HotDogSVG
+   fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+  />
   );
 };

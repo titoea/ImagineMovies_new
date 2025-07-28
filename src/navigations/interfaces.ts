@@ -33,4 +33,5 @@ export type IMainStackParamsList = {
 
 export type ITabStackParamsList = {
   Home: undefined;
+  Refreshment: undefined;
 }
