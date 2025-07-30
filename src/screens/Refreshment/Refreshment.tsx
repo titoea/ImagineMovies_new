@@ -11,7 +11,7 @@ import Button from '../../components/Button/Button';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
-const Refreshment : IRefreshmentProps = function Refreshment() {
+const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
     const [selectedCard, setSelectedCard] = useState<string>();
     const [selectedFoodRefreshment, setSelectedFoodRefreshment] = useState<string>('popcorn');
     const [selectedDrinkRefreshment, setSelectedDrinkRefreshment] = useState<string>('soft drinks');

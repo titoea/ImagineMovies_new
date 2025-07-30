@@ -16,6 +16,8 @@ import PepsiSVG from '../../assets/images/pepsi.svg';
 import AddLargeSVG from '../../assets/icons/addLarge.svg';
 import RemoveSVG from '../../assets/icons/remove.svg';
 import HotDogSVG from '../../assets/images/hotdog.svg';
+import SeatSVG from '../../assets/icons/seat_white.svg';
+import RadioSVG from '../../assets/icons/radio.svg';
 import {IconProps} from './interfaces';
 import { Pressable } from 'react-native';
 
@@ -216,5 +218,29 @@ return (
       opacity={opacity}
     />
   </Pressable>
+  );
+};
+
+export const SeatIcon: React.FC<IconProps> = function SeatIcon({color, size, opacity, style}){
+  return(
+    <SeatSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+    style={style}
+    />
+  );
+};
+
+export const RadioIcon: React.FC<IconProps> = function RadioIcon({color, size, opacity, style}){
+  return(
+    <RadioSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+    style={style}
+    />
   );
 };

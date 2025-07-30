@@ -29,6 +29,9 @@ export type IMainStackParamsList = {
   MoviePreview: {
     movie_id: number;
   };
+  SeatBooking : {
+    backdrop: string
+  },
 } & ITabStackParamsList;
 
 export type ITabStackParamsList = {

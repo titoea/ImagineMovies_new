@@ -4,6 +4,7 @@ import TabStack from './TabStack';
 import Movie from '../screens/Movie/movie';
 import { IMainStackParamsList } from './interfaces';
 import MoviePreview from '../screens/MoviePreview/MoviePreview';
+import SeatBooking from '../screens/Seat/SeatBooking';
 
 const Stack = createNativeStackNavigator<IMainStackParamsList>();
 
@@ -17,6 +18,7 @@ const MainStack = function MainStack() {
       />
       <Stack.Screen name="Movie" component={Movie} options={{headerShown: false}}/>
       <Stack.Screen name="MoviePreview" component={MoviePreview} options={{headerShown: false}}/>
+      <Stack.Screen name="SeatBooking" component={SeatBooking} options={{headerShown: false}}/>
     </Stack.Navigator>
   );
 };
