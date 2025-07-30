@@ -2,6 +2,8 @@ import React, {useCallback, useState} from 'react';
 import { StyleSheet, View, ScrollView, ImageBackground, Text, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { RadioIcon, SeatIcon } from '../../components/Icons/Icons';
+import { FlatList } from 'react-native-gesture-handler';
+import Button from '../../components/Button/Button';
 
 const timeArray: string[] = [
     '10:30',
@@ -59,13 +61,13 @@ const SeatBooking = function SeatBooking({
     navigation,
     route: {params: {backdrop}},
 }){
-    const [dateArray, setDateArray] = useState<string[]>(generateDate());
+    const [dateArray, setDateArray] = useState<any[]>(generateDate());
     const [selectedDateIndex, setSelectedDateIndex] = useState<any>();
     const [price, setPrice] = useState<number>(0);
 
     const [twoDseatArray, setTwoDSeatArray] = useState<any[][]>(generateSeats());
     const [selectedSeatArray, setSelectedSeatArray] = useState([]);
-    const [selectedaTimeIndex, setSelectedTimeIndex] = useState<any>();
+    const [selectedTimeIndex, setSelectedTimeIndex] = useState<any>();
 
     const selectSeatArray = useCallback((index: number, subindex: number, num: number)=>{
         if (!twoDseatArray[index][subindex].taken) {
@@ -86,6 +88,8 @@ const SeatBooking = function SeatBooking({
             setTwoDSeatArray(temp);
         }
     },[selectedSeatArray, twoDseatArray]);
+
+    const BookSeats = useCallback(() =>{},[]);
     return(
         <ScrollView style={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
             <View>
@@ -113,22 +117,70 @@ const SeatBooking = function SeatBooking({
             </View>
             <View style={styles.seatRadioContainer}>
                     <View style={styles.radioContainer}>
-                        <RadioIcon style={styles.radioIcon}/>
+                        <RadioIcon size={20} style={styles.radioIcon}/>
                         <Text style={styles.radioText}>Available</Text>
                     </View>
-            </View>
-
                     <View style={styles.radioContainer}>
-                        <RadioIcon color={'grey'} style={styles.radioIcon}/>
+                        <RadioIcon size={20} color={'grey'} style={styles.radioIcon}/>
                         <Text style={styles.radioText}>Taken</Text>
                     </View>
 
 
                     <View style={styles.radioContainer}>
-                        <RadioIcon color="yellow" style={styles.radioIcon}/>
+                        <RadioIcon  size={20} color="yellow" style={styles.radioIcon}/>
                         <Text style={styles.radioText}>Selected</Text>
                     </View>
-
+            </View>
+            <View>
+                <FlatList showsHorizontalScrollIndicator={false} bounces={false} data={dateArray} keyExtractor={item => item.date} horizontal contentContainerStyle={styles.containerGap24}
+                    renderItem={({item, index}) => {
+                        return (<TouchableOpacity onPress={() => setSelectedDateIndex(index)}>
+                            <View style={[styles.dateContainer, index === 0 ? {marginLeft: 24} : index === dateArray.length - 1 ? {marginRight: 24} : index === selectedDateIndex ? {backgroundColor: 'orange'} : {}]}>
+                                <Text style={styles.dateText}>{item.date}</Text>
+                                <Text style={styles.dayText}>{item.day}</Text>
+                            </View>
+                        </TouchableOpacity>);
+                    }}/>
+            </View>
+            <View style={styles.outerContainer}>
+        <FlatList
+          data={timeArray}
+          keyExtractor={item => item}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          bounces={false}
+          contentContainerStyle={styles.containerGap24}
+          renderItem={({item, index}) => {
+            return (
+              <TouchableOpacity onPress={() => setSelectedTimeIndex(index)}>
+                <View
+                  style={[
+                    styles.timeContainer,
+                    index === 0
+                      ? {marginLeft: 24}
+                      : index === dateArray.length - 1
+                      ? {marginRight: 24}
+                      : {},
+                    index === selectedTimeIndex
+                      ? {backgroundColor: 'orange'}
+                      : {},
+                  ]}>
+                  <Text style={styles.timeText}>{item}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
+      <View style={styles.buttonPriceContainer}>
+        <View style={styles.priceContainer}>
+          <Text style={styles.totalPriceText}>Total Price</Text>
+          <Text style={styles.price}>$ {price}.00</Text>
+        </View>
+        <Button onPress={BookSeats}>
+          <Text style={styles.buttonText}>Buy Tickets</Text>
+        </Button>
+      </View>
         </ScrollView>
     );
 };
@@ -184,6 +236,74 @@ const styles = StyleSheet.create({
     radioText: {
         fontFamily: 'AcuminRPro',
         fontSize: 12,
+        marginHorizontal: 5,
     },
-
+    containerGap24:{
+        gap: 24,
+    },
+    dateContainer: {
+        width: 10 * 7,
+        height: 10 * 10,
+        borderRadius: 70,
+        backgroundColor: '#a3cdebf5',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 5,
+    },
+    dateText: {
+        fontFamily: 'BebasNeue-Regular',
+        fontSize: 24,
+        color: 'white',
+    },
+    dayText: {
+        fontFamily: 'BebasNeue-Regular',
+        fontSize: 12,
+        color: 'white',
+    },
+    outerContainer: {
+    marginVertical: 24,
+    },
+    timeContainer: {
+        paddingVertical: 10,
+        borderWidth: 1,
+        borderColor: 'black',
+        paddingHorizontal: 20,
+        borderRadius: 25,
+        backgroundColor:' #a3cdebf5',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+  timeText: {
+    fontFamily: 'BebasNeue-Regular' ,
+    fontSize: 14,
+    color: 'black',
+  },
+  buttonPriceContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingBottom: 24,
+  },
+  priceContainer: {
+    alignItems: 'center',
+  },
+  totalPriceText: {
+    fontFamily: 'AcuminRPro',
+    fontSize: 14,
+    color: 'black',
+  },
+  price: {
+    fontFamily: 'AcuminRPro',
+    fontSize: 24,
+    color: 'black',
+  },
+  buttonText: {
+    borderRadius: 25,
+    paddingHorizontal: 24,
+    paddingVertical: 10,
+    fontFamily: 'AcuminRPro',
+    fontSize: 16,
+    color: 'black',
+  },
 });

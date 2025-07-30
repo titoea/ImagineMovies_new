@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
 import { INowShowingSliderItemProps } from './interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -33,13 +33,14 @@ const styles = StyleSheet.create({
         width: WINDOW_WIDTH,
     },
     image: {
+        borderRadius: 10,
         width: 200,
         height: 300,
     },
     title: {
         fontFamily: 'BebasNeue-Regular',
         fontSize: 20,
-        fontWeight: "400",
+        fontWeight: '400',
         textAlign: 'center',
     },
 });

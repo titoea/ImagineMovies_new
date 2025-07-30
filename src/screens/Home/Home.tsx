@@ -33,5 +33,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 24,
     marginBottom: 13,
+    marginHorizontal: 20,
   },
 });

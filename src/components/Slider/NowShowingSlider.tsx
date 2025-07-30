@@ -1,8 +1,8 @@
 import { FlatList, StyleSheet, View } from 'react-native';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import NowShowingSliderItem from './NowShowingSliderItem';
 import { INowShowingSliderProps } from './interfaces';
-import NowShowingAPi, { INowShowingResult, IResults } from '../../api/NowShowing.api';
+import NowShowingAPi, {IResults } from '../../api/NowShowing.api';
 import axios, { Canceler } from 'axios';
 import { useConfiguration } from '../../providers/ConfigurationProvider/ConfigurationContext';
 
@@ -36,7 +36,7 @@ const NowShowingSlider:INowShowingSliderProps = function NowShowingSlider () {
 
     return (
             <View style={styles.container}>
-                <FlatList data={list} renderItem={({item, index}) => <NowShowingSliderItem item={item} index={index} />}
+                <FlatList bounces={false} data={list} renderItem={({item, index}) => <NowShowingSliderItem item={item} index={index} />}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled/>

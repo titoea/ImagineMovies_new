@@ -40,7 +40,6 @@ const Card : ICardProps = function Card({
         setTotalPrice(totalAmount);
         return null;
     }, [item.id, item.price, quantity, selectedCard, totalPrice]);
-    console.log(totalPrice);
     return (
         <View style={styles.container} >
             <Animated.View style={styles.mainIconStyle} animatedProps={animatedProps}>

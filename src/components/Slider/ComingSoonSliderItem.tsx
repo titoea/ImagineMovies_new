@@ -6,9 +6,12 @@ import LinearGradient from 'react-native-linear-gradient';
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
 const ComingSoonSliderItem = function ComingSoonSliderItem({item, index}: SliderProps) {
+    const imageBaseURL = 'https://image.tmdb.org';
     return (
         <View style={styles.itemContainer}>
-            <Image source={item.image} style={styles.image}/>
+            <Image source={{
+          uri: imageBaseURL + '/t/p/w500' + item.poster_path,
+        }} style={styles.image}/>
         </View>
     );
 };
@@ -23,6 +26,7 @@ const styles = StyleSheet.create({
         gap: 20,
     },
     image: {
+        borderRadius: 10,
         width: 100,
         height: 150,
     },

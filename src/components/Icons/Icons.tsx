@@ -18,6 +18,10 @@ import RemoveSVG from '../../assets/icons/remove.svg';
 import HotDogSVG from '../../assets/images/hotdog.svg';
 import SeatSVG from '../../assets/icons/seat_white.svg';
 import RadioSVG from '../../assets/icons/radio.svg';
+import HomeTabSVG from '../../assets/icons/hometab.svg';
+import MembershipSVG from '../../assets/icons/membership.svg';
+import RefreshmentSVG from '../../assets/icons/refreshment.svg';
+import AccountSVG from '../../assets/icons/account.svg';
 import {IconProps} from './interfaces';
 import { Pressable } from 'react-native';
 
@@ -241,6 +245,57 @@ export const RadioIcon: React.FC<IconProps> = function RadioIcon({color, size, o
     height={size}
     opacity={opacity}
     style={style}
+    stroke={color}
+    />
+  );
+};
+
+export const HomeTabIcon: React.FC<IconProps> = function HomeTabIcon({color, size, opacity, style}){
+  return(
+    <HomeTabSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+    style={style}
+    stroke={color}
+    />
+  );
+};
+
+export const MembershipIcon: React.FC<IconProps> = function MembershipIcon({color, size, opacity, style}){
+  return(
+    <MembershipSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+    style={style}
+    stroke={color}
+    />
+  );
+};
+export const RefreshmentIcon: React.FC<IconProps> = function RefreshmentIcon({color, size, opacity, style}){
+  return(
+    <RefreshmentSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+    style={style}
+    stroke={color}
+    />
+  );
+};
+export const AccountIcon: React.FC<IconProps> = function AccountIcon({color, size, opacity, style}){
+  return(
+    <AccountSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+    style={style}
+    stroke={color}
     />
   );
 };
