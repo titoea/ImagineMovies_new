@@ -14,6 +14,7 @@ import FantaSVG from '../../assets/images/fanta.svg';
 import CokeSVG from '../../assets/images/coke.svg';
 import PepsiSVG from '../../assets/images/pepsi.svg';
 import AddLargeSVG from '../../assets/icons/addLarge.svg';
+import RemoveSVG from '../../assets/icons/remove.svg';
 import HotDogSVG from '../../assets/images/hotdog.svg';
 import {IconProps} from './interfaces';
 import { Pressable } from 'react-native';
@@ -202,5 +203,18 @@ return (
     height={size}
     opacity={opacity}
   />
+  );
+};
+
+export const RemoveIcon: React.FC<IconProps> = function RemoveIcon({color, size, opacity, handlePress}){
+return (
+  <Pressable onPress={handlePress}>
+    <RemoveSVG
+     fill={color}
+      width={size}
+      height={size}
+      opacity={opacity}
+    />
+  </Pressable>
   );
 };
