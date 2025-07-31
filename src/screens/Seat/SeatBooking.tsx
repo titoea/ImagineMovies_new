@@ -1,9 +1,10 @@
 import React, {useCallback, useState} from 'react';
-import { StyleSheet, View, ScrollView, ImageBackground, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ScrollView, ImageBackground, Text, TouchableOpacity, ToastAndroid } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { RadioIcon, SeatIcon } from '../../components/Icons/Icons';
 import { FlatList } from 'react-native-gesture-handler';
 import Button from '../../components/Button/Button';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const timeArray: string[] = [
     '10:30',
@@ -89,7 +90,28 @@ const SeatBooking = function SeatBooking({
         }
     },[selectedSeatArray, twoDseatArray]);
 
-    const BookSeats = useCallback(() =>{},[]);
+    const BookSeats = useCallback(async() =>{
+        if(selectSeatArray.length !== 0 && timeArray[selectedTimeIndex] !== undefined && dateArray[selectedDateIndex] !== undefined){
+            try{
+                await EncryptedStorage.setItem('ticket', JSON.stringify({
+                    seatArray: selectSeatArray,
+                    time: timeArray[selectedTimeIndex],
+                    date: dateArray[selectedDateIndex],
+                    ticketImage: backdrop,
+                }));
+            }catch(error){
+                console.log('something went wrong while storing in BookSeats function');
+            }
+             navigation.navigate('Ticket', {
+            seatArray: selectSeatArray,
+            time: timeArray[selectedTimeIndex],
+            date: dateArray[selectedDateIndex],
+            ticketImage: backdrop,
+        });
+        }else{
+            ToastAndroid.showWithGravity("Please select seats, Date and Time of the movie", ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+        }
+    },[backdrop, dateArray, navigation, selectSeatArray, selectedDateIndex, selectedTimeIndex]);
     return(
         <ScrollView style={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
             <View>
