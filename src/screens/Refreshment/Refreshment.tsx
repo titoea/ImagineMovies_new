@@ -15,7 +15,8 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
     const [selectedCard, setSelectedCard] = useState<string>();
     const [selectedFoodRefreshment, setSelectedFoodRefreshment] = useState<string>('popcorn');
     const [selectedDrinkRefreshment, setSelectedDrinkRefreshment] = useState<string>('soft drinks');
-    const [totalPrice, setTotalPrice] = useState<number>();
+    const [foodPrice, setFoodPrice] = useState<number>();
+    const [drinkPrice, setDrinkPrice] = useState<number>();
     const selectedCardSize = useSharedValue<number>(0);
     const unSelectedCardSize = useSharedValue<number>(0);
 
@@ -25,6 +26,23 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
         unSelectedCardSize.value = 10;
         return null;
     },[selectedCardSize, unSelectedCardSize]);
+
+    const renderFoodItem = useCallback((item, index)=>{
+        return  <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateFoodPrice}/>;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[selectedCard]);
+
+    const renderDrinkItem = useCallback((item, index)=>{
+        return <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateDrinkPrice}/>;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[selectedCard])
+
+    const calculateFoodPrice = useCallback((data:number)=>{
+        setFoodPrice(data);
+    },[]);
+    const calculateDrinkPrice = useCallback((data:number)=>{
+        setDrinkPrice(data);
+    },[]);
 
  return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -39,7 +57,7 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
         <Picker.Item label="Chocolate Bars" value="chocolate bars" />
         </Picker>
         <View style = {styles.refreshment1}>
-        <FlatList data={selectedFoodRefreshment === 'popcorn' ? RefreshmentData1 : RefreshmentData2} renderItem={({item, index}) => <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize}/>}
+        <FlatList data={selectedFoodRefreshment === 'popcorn' ? RefreshmentData1 : RefreshmentData2} renderItem={renderFoodItem}
             horizontal
             pagingEnabled
             keyExtractor={item => item.id}
@@ -55,13 +73,13 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
         <Picker.Item label="Water" value="water" />
         </Picker>
         <View>
-            <FlatList data={RefreshmentData5} renderItem={({item, index}) => <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize}/>}
+            <FlatList data={RefreshmentData5} renderItem={({item, index}) => <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateDrinkPrice}/>}
             horizontal
             pagingEnabled
             />
         </View>
         <View style={styles.bottomContainer}>
-            <Text style={styles.totalText}>Total: $10.00</Text>
+            <Text style={styles.totalText}>Total: {foodPrice && drinkPrice ? foodPrice + drinkPrice : foodPrice ? foodPrice : drinkPrice ? drinkPrice : 0}.00</Text>
             <Button>Order now</Button>
         </View>
     </ScrollView>

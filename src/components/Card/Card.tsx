@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { AddLargeIcon, CokeIcon, FantaIcon, HotDogIcon, PepsiIcon, PopcornLargeIcon, PopcornMediumIcon, PopcornSmallIcon, RemoveIcon } from '../Icons/Icons';
 import { ICardProps, cardName } from './interfaces';
@@ -8,6 +8,8 @@ import Animated, {
   withTiming,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import { RefreshmentDataForCard } from '../../data/RefreshmentData';
+import { IRefreshmentDataForCardProps } from '../../data/interfaces';
 
 const Card : ICardProps = function Card({
     item,
@@ -19,27 +21,47 @@ const Card : ICardProps = function Card({
     selectedCard,
     selectedCardSize,
     unselectedCardSize,
+    cummulativeTotalPrice,
 }){
     const [quantity, setquantity] = useState<number>(1);
-    const [totalPrice, setTotalPrice] = useState<number>(item.id === selectedCard ? 1 * Number(item.price) : 0);
+    const [refreshmentPrices, setRefreshmentPrices] = useState<IRefreshmentDataForCardProps>(RefreshmentDataForCard);
 
     const animatedProps = useAnimatedStyle(() => ({
         padding: withTiming(selectedCard === id ? selectedCardSize.value : unselectedCardSize.value),
     }));
 
     const handleAdd = useCallback(() =>{
+        setRefreshmentPrices(prevItems => prevItems.map(mapItem => mapItem.id === selectedCard ? {...mapItem, quantity : quantity + 1 } : mapItem));
         setquantity(quantity + 1);
-        const totalAmount = item.id === selectedCard ? (quantity + 1) * Number(item.price) : totalPrice;
-        setTotalPrice(totalAmount);
         return null;
-    },[item.id, item.price, quantity, selectedCard, totalPrice]);
+    },[quantity, selectedCard]);
 
     const handleRemove = useCallback(() => {
+        if(quantity <= 0 ){
+            return;
+        }
         setquantity(quantity - 1);
-        const totalAmount = item.id === selectedCard ? (quantity - 1) * Number(item.price) : totalPrice;
-        setTotalPrice(totalAmount);
+         setRefreshmentPrices(prevItems => prevItems.map(mapItem => mapItem.id === selectedCard ? {...mapItem, quantity : quantity - 1 } : mapItem));
         return null;
-    }, [item.id, item.price, quantity, selectedCard, totalPrice]);
+    }, [quantity, selectedCard]);
+
+    const totalPrice = useMemo(() =>{
+        let total = 0;
+        refreshmentPrices.forEach((refreshmentObj, index) =>{
+            total = total + refreshmentObj.quantity * refreshmentObj.price;
+        });
+        return total;
+    },[refreshmentPrices]);
+
+    const sendPrice = useCallback(()=>{
+        cummulativeTotalPrice(totalPrice);
+    },[cummulativeTotalPrice, totalPrice]);
+
+    useEffect(()=>{
+        sendPrice();
+        console.log(refreshmentPrices);
+    },[refreshmentPrices, sendPrice, totalPrice]);
+
     return (
         <View style={styles.container} >
             <Animated.View style={styles.mainIconStyle} animatedProps={animatedProps}>
