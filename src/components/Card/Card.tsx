@@ -61,7 +61,6 @@ const Card : ICardProps = function Card({
         sendPrice();
         console.log(refreshmentPrices);
     },[refreshmentPrices, sendPrice, totalPrice]);
-
     return (
         <View style={styles.container} >
             <Animated.View style={styles.mainIconStyle} animatedProps={animatedProps}>
@@ -71,9 +70,9 @@ const Card : ICardProps = function Card({
                 ? <CokeIcon size={150}/> : name === cardName.pepsi ? <PepsiIcon size={150}/> : name === cardName.hotdogLarge ? <HotDogIcon size={150} /> : name === cardName.hotdogMedium ? <HotDogIcon size={150}/> : <HotDogIcon size={150}/> }
             </Animated.View>
             <View style= {selectedCard !== id ? styles.priceAdd : styles.priceAddRemove }>
-                <Text>${price}</Text>
+                <Text style={styles.priceText}>${price}</Text>
                 {selectedCard === id ? <RemoveIcon size={20} handlePress={handleRemove}/> : null}
-                {selectedCard === id ? <Text>{quantity}</Text> : null}
+                {selectedCard === id ? <Text style={styles.quantityText}>{quantity}</Text> : null}
                 {selectedCard === id  ? <AddLargeIcon size={20} handlePress={handleAdd}/> : <AddLargeIcon size={20} handlePress={handlePress}/>}
             </View>
         </View>
@@ -85,7 +84,7 @@ export default Card;
 const styles = StyleSheet.create({
     container: {
         borderRadius: 10,
-        backgroundColor: '#e4eef5',
+        backgroundColor: 'd0f0f4d',
         flex: 1,
         marginHorizontal: 30,
         paddingHorizontal: 5,
@@ -97,6 +96,13 @@ const styles = StyleSheet.create({
    text:{
     textAlign: 'center',
     marginVertical: 5,
+    color: 'white',
+   },
+   priceText: {
+    color: 'white',
+   },
+   quantityText: {
+    color: 'white',
    },
    priceAdd: {
     marginTop: 5,

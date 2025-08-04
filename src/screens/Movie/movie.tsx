@@ -112,11 +112,13 @@ const styles =  StyleSheet.create({
         flex: 2,
         fontSize: 16,
         fontFamily: 'AcuminRPro',
+        color: 'white',
     },
     dateReleasedText: {
         flex: 5,
         fontSize: 16,
         fontFamily: 'AcuminRPro',
+        color: 'white',
     },
     synopsisContainer: {
        flex: 1,
@@ -126,10 +128,12 @@ const styles =  StyleSheet.create({
      synopsisTitleText: {
         fontFamily: 'AcuminRPro',
         fontSize: 20,
+        color: 'white',
     },
     synopsisText: {
         fontFamily: 'AcuminRPro',
         fontSize: 16,
+        color: 'white',
 
     },
     buttonContainer: {
@@ -143,6 +147,7 @@ const styles =  StyleSheet.create({
     reviewsText: {
         fontFamily: 'AcuminRPro',
         fontSize: 20,
+        color: 'white',
     },
     reviewsListContainer: {
         marginTop: 10,

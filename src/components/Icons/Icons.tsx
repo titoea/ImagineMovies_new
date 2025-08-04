@@ -22,6 +22,7 @@ import HomeTabSVG from '../../assets/icons/hometab.svg';
 import MembershipSVG from '../../assets/icons/membership.svg';
 import RefreshmentSVG from '../../assets/icons/refreshment.svg';
 import AccountSVG from '../../assets/icons/account.svg';
+import ClockSVG from '../../assets/icons/clock.svg';
 import {IconProps} from './interfaces';
 import { Pressable } from 'react-native';
 
@@ -290,6 +291,18 @@ export const RefreshmentIcon: React.FC<IconProps> = function RefreshmentIcon({co
 export const AccountIcon: React.FC<IconProps> = function AccountIcon({color, size, opacity, style}){
   return(
     <AccountSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+    style={style}
+    stroke={color}
+    />
+  );
+};
+export const ClockIcon: React.FC<IconProps> = function ClockIcon({color, size, opacity, style}){
+  return(
+    <ClockSVG
     fill={color}
     width={size}
     height={size}

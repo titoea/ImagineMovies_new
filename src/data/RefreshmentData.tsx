@@ -1,4 +1,4 @@
-import { IRefreshmentDataForCardProps } from "./interfaces";
+import { IRefreshmentDataForCardProps } from './interfaces';
 
 export const RefreshmentData1 = [
     {

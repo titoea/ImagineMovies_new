@@ -11,7 +11,7 @@ const OnboardingStack = function OnboardingStack() {
   return (
     <Stack.Navigator
       initialRouteName="Landing"
-      screenOptions={{header: () => null}}>
+      screenOptions={{header: () => null, contentStyle:{backgroundColor: 'black'}}}>
       <Stack.Screen
         name="Landing"
         component={Landing}

@@ -32,6 +32,8 @@ export type IMainStackParamsList = {
   SeatBooking : {
     backdrop: string
   },
+  Ticket : {
+  }
 } & ITabStackParamsList;
 
 export type ITabStackParamsList = {

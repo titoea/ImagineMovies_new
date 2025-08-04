@@ -9,6 +9,7 @@ import { IHomeProps } from './interfaces';
 
 const Home :IHomeProps = function Home({navigation}) {
   return (
+    <View style={styles.container}>
     <ScrollView>
       <View>
         <Search/>
@@ -22,17 +23,22 @@ const Home :IHomeProps = function Home({navigation}) {
         <ComingSoonSlider/>
       </View>
     </ScrollView>
+    </View>
   );
 };
 
 export default Home;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'black',
+  },
   headerText:{
     fontFamily: 'AcuminBdPro',
     fontWeight: "700",
     fontSize: 24,
     marginBottom: 13,
     marginHorizontal: 20,
+    color: 'white',
   },
 });

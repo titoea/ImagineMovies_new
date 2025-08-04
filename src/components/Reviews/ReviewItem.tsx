@@ -46,10 +46,12 @@ const styles = StyleSheet.create({
         fontFamily: 'BebasNeue-Regular',
         fontSize: 16,
         fontWeight: "400",
+        color: 'white',
     },
     author: {
          fontFamily: 'BebasNeue-Regular',
         fontSize: 20,
         fontWeight: "400",
+        color: 'white',
     },
 });

@@ -15,14 +15,17 @@ const TabStack = function TabStack() {
       screenOptions={({route} )=> ({
         tabBarIcon: ({focused, color, size}) =>{
           if (route.name === 'Home'){
-            return focused ? <HomeIcon color={'#40E2FF'} size={20}/> : <HomeIcon  size={20}/>;
+            return focused ? <HomeIcon color={'#40E2FF'} size={20}/> : <HomeIcon color={'white'}  size={20}/>;
           } else if (route.name === 'Membership'){
-            return focused ? <MembershipIcon color={'#40E2FF'} size={20}/> : <MembershipIcon  size={20}/>;
+            return focused ? <MembershipIcon color={'#40E2FF'} size={20}/> : <MembershipIcon color={'white'}  size={20}/>;
           } else if (route.name==='Refreshment'){
-            return focused ? <RefreshmentIcon color={'#40E2FF'} size={20}/> : <RefreshmentIcon  size={20}/>;
+            return focused ? <RefreshmentIcon color={'#40E2FF'} size={20}/> : <RefreshmentIcon color={'white'}  size={20}/>;
           } else if (route.name=== 'Account'){
-            return focused ? <AccountIcon color={'#40E2FF'} size={20} /> : <AccountIcon size={20} />
+            return focused ? <AccountIcon color={'#40E2FF'} size={20} /> : <AccountIcon color={'white'}  size={20} />
           }
+        },
+        tabBarStyle: {
+          backgroundColor: 'black',
         },
         tabBarActiveTintColor: '#40E2FF',
         tabBarInactiveTintColor: 'gray',

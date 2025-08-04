@@ -91,10 +91,10 @@ const SeatBooking = function SeatBooking({
     },[selectedSeatArray, twoDseatArray]);
 
     const BookSeats = useCallback(async() =>{
-        if(selectSeatArray.length !== 0 && timeArray[selectedTimeIndex] !== undefined && dateArray[selectedDateIndex] !== undefined){
+        if(selectedSeatArray.length !== 0 && timeArray[selectedTimeIndex] !== undefined && dateArray[selectedDateIndex] !== undefined){
             try{
                 await EncryptedStorage.setItem('ticket', JSON.stringify({
-                    seatArray: selectSeatArray,
+                    seatArray: selectedSeatArray,
                     time: timeArray[selectedTimeIndex],
                     date: dateArray[selectedDateIndex],
                     ticketImage: backdrop,
@@ -103,7 +103,7 @@ const SeatBooking = function SeatBooking({
                 console.log('something went wrong while storing in BookSeats function');
             }
              navigation.navigate('Ticket', {
-            seatArray: selectSeatArray,
+            seatArray: selectedSeatArray,
             time: timeArray[selectedTimeIndex],
             date: dateArray[selectedDateIndex],
             ticketImage: backdrop,
@@ -111,7 +111,7 @@ const SeatBooking = function SeatBooking({
         }else{
             ToastAndroid.showWithGravity("Please select seats, Date and Time of the movie", ToastAndroid.SHORT, ToastAndroid.BOTTOM);
         }
-    },[backdrop, dateArray, navigation, selectSeatArray, selectedDateIndex, selectedTimeIndex]);
+    },[backdrop, dateArray, navigation, selectedDateIndex, selectedSeatArray, selectedTimeIndex]);
     return(
         <ScrollView style={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
             <View>
@@ -139,7 +139,7 @@ const SeatBooking = function SeatBooking({
             </View>
             <View style={styles.seatRadioContainer}>
                     <View style={styles.radioContainer}>
-                        <RadioIcon size={20} style={styles.radioIcon}/>
+                        <RadioIcon size={20} color='white' style={styles.radioIcon}/>
                         <Text style={styles.radioText}>Available</Text>
                     </View>
                     <View style={styles.radioContainer}>
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     container: {
         display: 'flex',
         flex: 1,
-        backgroundColor: '#e4eef5',
+        backgroundColor: 'black',
     },
     imageBG: {
        width: '100%',
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'AcuminRPro',
         fontSize: 12,
-        color: 'black',
+        color: 'white',
     },
     seatContainer: {
         marginVertical: 20,
@@ -259,6 +259,7 @@ const styles = StyleSheet.create({
         fontFamily: 'AcuminRPro',
         fontSize: 12,
         marginHorizontal: 5,
+        color: 'white',
     },
     containerGap24:{
         gap: 24,
@@ -288,7 +289,7 @@ const styles = StyleSheet.create({
     timeContainer: {
         paddingVertical: 10,
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: 'white',
         paddingHorizontal: 20,
         borderRadius: 25,
         backgroundColor:' #a3cdebf5',
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
   timeText: {
     fontFamily: 'BebasNeue-Regular' ,
     fontSize: 14,
-    color: 'black',
+    color: 'white',
   },
   buttonPriceContainer: {
     flexDirection: 'row',
@@ -313,12 +314,12 @@ const styles = StyleSheet.create({
   totalPriceText: {
     fontFamily: 'AcuminRPro',
     fontSize: 14,
-    color: 'black',
+    color: 'white',
   },
   price: {
     fontFamily: 'AcuminRPro',
     fontSize: 24,
-    color: 'black',
+    color: 'white',
   },
   buttonText: {
     borderRadius: 25,
@@ -326,6 +327,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontFamily: 'AcuminRPro',
     fontSize: 16,
-    color: 'black',
+    color: 'white',
   },
 });

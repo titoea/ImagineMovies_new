@@ -27,6 +27,9 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
         return null;
     },[selectedCardSize, unSelectedCardSize]);
 
+    const handleOrder = useCallback(()=>{
+    },[]);
+
     const renderFoodItem = useCallback((item, index)=>{
         return  <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateFoodPrice}/>;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -35,7 +38,7 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
     const renderDrinkItem = useCallback((item, index)=>{
         return <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateDrinkPrice}/>;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[selectedCard])
+    },[selectedCard]);
 
     const calculateFoodPrice = useCallback((data:number)=>{
         setFoodPrice(data);
@@ -50,14 +53,15 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
         selectedValue={selectedFoodRefreshment}
         onValueChange={(itemValue, itemIndex) =>
             setSelectedFoodRefreshment(itemValue)
-        }>
-        <Picker.Item label="Popcorn" value="popcorn" />
-        <Picker.Item label="Hot dog" value="hot dog" />
-        <Picker.Item label="Candy" value="candy" />
-        <Picker.Item label="Chocolate Bars" value="chocolate bars" />
+        }
+       style={{backgroundColor: 'black'}}>
+        <Picker.Item label="Popcorn" value="popcorn" style={{backgroundColor: 'black', color: 'white'}}/>
+        <Picker.Item label="Hot dog" value="hot dog" style={{backgroundColor: 'black', color: 'white'}} />
+        <Picker.Item label="Candy" value="candy"style={{backgroundColor: 'black', color: 'white'}}/>
+        <Picker.Item label="Chocolate Bars" value="chocolate bars" style={{backgroundColor: 'black', color: 'white'}}/>
         </Picker>
         <View style = {styles.refreshment1}>
-        <FlatList data={selectedFoodRefreshment === 'popcorn' ? RefreshmentData1 : RefreshmentData2} renderItem={renderFoodItem}
+        <FlatList data={selectedFoodRefreshment === 'popcorn' ? RefreshmentData1 : RefreshmentData2} renderItem={({item, index}) => <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateFoodPrice}/>}
             horizontal
             pagingEnabled
             keyExtractor={item => item.id}
@@ -67,10 +71,11 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
         selectedValue={selectedDrinkRefreshment}
         onValueChange={(itemValue, itemIndex) =>
             setSelectedDrinkRefreshment(itemValue)
-        }>
-        <Picker.Item label="Soft Drink" value="soft drinks" />
-        <Picker.Item label="Hot Drinks" value="hot drinks" />
-        <Picker.Item label="Water" value="water" />
+        }
+        style={{backgroundColor: 'black'}}>
+        <Picker.Item label="Soft Drink" value="soft drinks" style={{backgroundColor: 'black', color: 'white'}}/>
+        <Picker.Item label="Hot Drinks" value="hot drinks" style={{backgroundColor: 'black', color: 'white'}}/>
+        <Picker.Item label="Water" value="water" style={{backgroundColor: 'black', color: 'white'}} />
         </Picker>
         <View>
             <FlatList data={RefreshmentData5} renderItem={({item, index}) => <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateDrinkPrice}/>}
@@ -80,7 +85,7 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
         </View>
         <View style={styles.bottomContainer}>
             <Text style={styles.totalText}>Total: {foodPrice && drinkPrice ? foodPrice + drinkPrice : foodPrice ? foodPrice : drinkPrice ? drinkPrice : 0}.00</Text>
-            <Button>Order now</Button>
+            <Button onPress={handleOrder}>Order now</Button>
         </View>
     </ScrollView>
  );
@@ -102,5 +107,6 @@ const styles = StyleSheet.create({
     totalText:{
         textAlign:'center',
         marginBottom: 20,
+        color: 'white',
     },
 });

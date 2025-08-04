@@ -27,17 +27,32 @@ const Drawer = createDrawerNavigator();
 // };
 
 const CustomDrawerNavigator = function CustomDrawerNavigator(){
+
   return (
   <Drawer.Navigator
     initialRouteName ="Home"
+    screenOptions={{headerStyle:{
+    backgroundColor: 'black'},
+    headerTintColor: 'white',
+    headerTitleStyle: {fontWeight: 'bold'},
+    headerShadowVisible: true,
+    drawerStyle: {
+      backgroundColor: 'black',
+    },
+    drawerActiveTintColor: '#40E2FF',
+    drawerInactiveTintColor: 'white',
+    drawerLabelStyle: {
+      color: 'white',
+    }
+    }}
   // eslint-disable-next-line react/no-unstable-nested-components
     drawerContent={props => (
     <DrawerContentScrollView {...props}>
         <Text> Hello</Text>
-        <DrawerItem label={'Home'} onPress={() => {props.navigation.navigate('Home');}} icon={ ({focused}) => (<HomeIcon size={20} color={focused ? '#0d2d33' : '#40e2ff' }/>)}/>
-        <DrawerItem label={'Reservations'} onPress={() => {props.navigation.navigate('Reservations');}}  icon={({focused}) => (<ReservationsIcon size={20} color={focused ? '#0d2d33' : '#40e2ff' }/>)}/>
-        <DrawerItem label={'Settings'} onPress={() => {props.navigation.navigate('Settings');}} icon={({focused}) => (<SettingsIcon size={20} color={focused ? '#0d2d33' : '#40e2ff'  }/>)}/>
-        <DrawerItem label={'Help'} onPress={() => {props.navigation.navigate('Help');}} icon={({focused}) => (<HelpIcon size={20} color={focused ? '#0d2d33' : '#40e2ff'  }/>)}/>
+        <DrawerItem labelStyle={{color: 'white'}} label={'Home'} onPress={() => {props.navigation.navigate('Home');}} icon={ ({focused}) => (<HomeIcon size={20} color={focused ? '#0d2d33' : '#40e2ff' }/>)}/>
+        <DrawerItem labelStyle={{color: 'white'}} label={'Reservations'} onPress={() => {props.navigation.navigate('Reservations');}}  icon={({focused}) => (<ReservationsIcon size={20} color={focused ? '#0d2d33' : '#40e2ff' }/>)}/>
+        <DrawerItem labelStyle={{color: 'white'}} label={'Settings'} onPress={() => {props.navigation.navigate('Settings');}} icon={({focused}) => (<SettingsIcon size={20} color={focused ? '#0d2d33' : '#40e2ff'  }/>)}/>
+        <DrawerItem labelStyle={{color: 'white'}} label={'Help'} onPress={() => {props.navigation.navigate('Help');}} icon={({focused}) => (<HelpIcon size={20} color={focused ? '#0d2d33' : '#40e2ff'  }/>)}/>
     </DrawerContentScrollView>
   )}>
     <Drawer.Screen name="Home" component={MainStack} options={({ route }) => {
