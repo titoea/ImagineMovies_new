@@ -23,6 +23,7 @@ import MembershipSVG from '../../assets/icons/membership.svg';
 import RefreshmentSVG from '../../assets/icons/refreshment.svg';
 import AccountSVG from '../../assets/icons/account.svg';
 import ClockSVG from '../../assets/icons/clock.svg';
+import SearchSVG from '../../assets/icons/search.svg';
 import {IconProps} from './interfaces';
 import { Pressable } from 'react-native';
 
@@ -303,6 +304,18 @@ export const AccountIcon: React.FC<IconProps> = function AccountIcon({color, siz
 export const ClockIcon: React.FC<IconProps> = function ClockIcon({color, size, opacity, style}){
   return(
     <ClockSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+    style={style}
+    stroke={color}
+    />
+  );
+};
+export const SearchIcon: React.FC<IconProps> = function SearchIcon({color, size, opacity, style}){
+  return(
+    <SearchSVG
     fill={color}
     width={size}
     height={size}

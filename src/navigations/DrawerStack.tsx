@@ -58,7 +58,7 @@ const CustomDrawerNavigator = function CustomDrawerNavigator(){
     <Drawer.Screen name="Home" component={MainStack} options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? 'TabStack';
           if (routeName === 'Movie'){
-            return ({swipeEnabled: false });
+            return ({swipeEnabled: false , headerShown: true});
           }
           else {
             return({headerShown: true, swipeEnabled: true});

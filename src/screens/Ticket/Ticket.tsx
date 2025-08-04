@@ -1,11 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import { ClockIcon } from '../../components/Icons/Icons';
+import Button from '../../components/Button/Button';
+import { usePaystack } from 'react-native-paystack-webview';
 
 const Ticket = function Ticket({navigation, route} : any){
     const [ticketData, setTicketData] = useState<any>(route.params);
+    const {popup} = usePaystack();
+
+    const payNow = useCallback(() => {
+        popup.checkout({
+        email: 'titoeffiongakpan.992@gmail.com',
+        amount: 5000,
+        reference: 'TXN_123456',
+        plan: 'PLN_ey0ff1wo1ccik22',
+        invoice_limit: 3,
+        metadata: {
+            custom_fields: [
+            {
+                display_name: 'Order ID',
+                variable_name: 'order_id',
+                value: 'OID1234',
+            },
+            ],
+        },
+        onSuccess: (res) => console.log('Success:', res),
+        onCancel: () => console.log('User cancelled'),
+        onLoad: (res) => console.log('WebView Loaded:', res),
+        onError: (err) => console.log('WebView Error:', err),
+        });
+    },[popup]);
     useEffect(()=>{
          (async ()=>{
             try{
@@ -18,9 +44,8 @@ const Ticket = function Ticket({navigation, route} : any){
             }
          });
     },[]);
-    console.log('TICKET', ticketData);
     if (ticketData === undefined || ticketData ===  null){
-        return(<View style={styles.container}></View>)
+        return(<View style={styles.container} />);
     }
     return(
         <View style={styles.ticketContainer}>
@@ -29,7 +54,7 @@ const Ticket = function Ticket({navigation, route} : any){
                      <View
                         style={[
                         styles.blackCircle,
-                        {position: 'absolute', bottom: -40, left: -40},]} />
+                        {position: 'absolute', bottom: -40, left: -40}]} />
                         <View
                             style={[
                             styles.blackCircle,
@@ -37,7 +62,7 @@ const Ticket = function Ticket({navigation, route} : any){
               ]} />
                 </LinearGradient>
             </ImageBackground>
-            <View style={styles.linear}></View>
+            <View style={styles.linear} />
             <View style={styles.ticketFooter}>
                 <View
                     style={[
@@ -76,8 +101,12 @@ const Ticket = function Ticket({navigation, route} : any){
                 </View>
             </View>
             <Image source={require('../../assets/images/barcode.png')} style={styles.barcodeImage}/>
-        </View>
             </View>
+            <View style={styles.buttonContainer}>
+            <Button onPress={payNow}>Pay</Button>
+            <Button style={ styles.button} onPress={() => navigation.goBack()}>Go back</Button>
+            </View>
+        </View>
     );
 };
 
@@ -169,5 +198,13 @@ const styles = StyleSheet.create({
     width: 80,
     borderRadius: 80,
     backgroundColor: 'black',
+  },
+  buttonContainer:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 30,
+  },
+  button: {
+    marginTop : 10,
   },
 });

@@ -44,7 +44,7 @@ const Movie: IMovieProps = function Movie({navigation,route: {params : {movieIte
     },[]);
     useEffect(()=>{
         navigation.getParent()?.setOptions({
-            headerShown: false,
+            headerShown: true,
           });
     },[navigation]);
 

@@ -19,7 +19,6 @@ const MoviePreview : IMoviePreviewProps = function MoviePreview({route: {params:
           if (!response.data){
             return;
           }
-          console.log(response.data, movie_id);
          return setVideo(response.data.results);
     }, [movie_id]);
 

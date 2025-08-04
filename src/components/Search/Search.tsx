@@ -26,7 +26,9 @@ const Search = function Search(){
        style= {styles.searchBox}
        autoCapitalize="none"
        autoCorrect={false}
-       onChangeText={(text)=> handleSearch(text)}/>
+       onChangeText={(text)=> handleSearch(text)}
+       placeholderTextColor={'white'}
+       cursorColor={'white'}/>
     );
 };
 
@@ -41,6 +43,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginHorizontal: 20,
         marginVertical: 20,
+        color: 'white',
 
     },
 });
