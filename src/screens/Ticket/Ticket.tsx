@@ -2,36 +2,23 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import LinearGradient from 'react-native-linear-gradient';
-import { ClockIcon } from '../../components/Icons/Icons';
+import { ClockIcon, CokeIcon, FantaIcon, HotDogIcon, PepsiIcon, PopcornLargeIcon, PopcornMediumIcon, PopcornSmallIcon } from '../../components/Icons/Icons';
 import Button from '../../components/Button/Button';
-import { usePaystack } from 'react-native-paystack-webview';
+import { ITicketProps } from './interfaces';
+import { cardName } from '../../components/Card/interfaces';
+import { ScrollView } from 'react-native-gesture-handler';
+import { CommonActions } from '@react-navigation/native';
 
-const Ticket = function Ticket({navigation, route} : any){
+const Ticket: ITicketProps = function Ticket({navigation, route} : any){
     const [ticketData, setTicketData] = useState<any>(route.params);
-    const {popup} = usePaystack();
-
-    const payNow = useCallback(() => {
-        popup.checkout({
-        email: 'titoeffiongakpan.992@gmail.com',
-        amount: 5000,
-        reference: 'TXN_1234566',
-        plan: 'PLN_5owgxapjtoezx90',
-        invoice_limit: 3,
-        metadata: {
-            custom_fields: [
-            {
-                display_name: 'Order ID',
-                variable_name: 'order_id',
-                value: 'OID1234',
-            },
+    const goToHome = useCallback(()=>{
+        CommonActions.reset({
+            index: 0,
+            routes: [
+            { name: 'Home' },
             ],
-        },
-        onSuccess: (res) => console.log('Success:', res),
-        onCancel: () => console.log('User cancelled'),
-        onLoad: (res) => console.log('WebView Loaded:', res),
-        onError: (err) => console.log('WebView Error:', err),
-        });
-    },[popup]);
+         });
+    },[]);
     useEffect(()=>{
          (async ()=>{
             try{
@@ -47,7 +34,9 @@ const Ticket = function Ticket({navigation, route} : any){
     if (ticketData === undefined || ticketData ===  null){
         return(<View style={styles.container} />);
     }
+    console.log(ticketData.refreshmentsToBuy);
     return(
+        <ScrollView>
         <View style={styles.ticketContainer}>
             <ImageBackground source={{uri: ticketData?.ticketImage}} style={styles.ticketBGImage}>
                 <LinearGradient colors ={['#ce7c0ff5','#ce7c0f11']} style={styles.linearGradient}>
@@ -100,13 +89,24 @@ const Ticket = function Ticket({navigation, route} : any){
                     </Text>
                 </View>
             </View>
+            {ticketData.refreshmentsToBuy?.map((refreshments, index) =>(
+                <View key={index} style={styles.refreshmentsContainer}>
+                    <View>
+                    <Text style={styles.refreshmentText}>{refreshments.name}</Text>
+                    {refreshments.name === cardName.popcornLarge ? <PopcornLargeIcon size={40}/> : refreshments.name === cardName.popcornMedium ? <PopcornMediumIcon size={40}/> :
+                                    refreshments.name === cardName.popcornSmall ? <PopcornSmallIcon size={40}/> : refreshments.name === cardName.fanta ? <FantaIcon size={40}/> : refreshments.name === cardName.coke
+                                    ? <CokeIcon size={40}/> : refreshments.name === cardName.pepsi ? <PepsiIcon size={40}/> : refreshments.name === cardName.hotdogLarge ? <HotDogIcon size={40} /> : refreshments.name === cardName.hotdogMedium ? <HotDogIcon size={40}/> : <HotDogIcon size={40}/> }
+                    </View>
+                    <Text style={styles.refreshmentText}>x{refreshments.quantity}</Text>
+                </View>
+        ))}
             <Image source={require('../../assets/images/barcode.png')} style={styles.barcodeImage}/>
             </View>
             <View style={styles.buttonContainer}>
-            <Button onPress={payNow}>Pay</Button>
-            <Button style={ styles.button} onPress={() => navigation.goBack()}>Go back</Button>
+            <Button onPress={goToHome}>Go To Home</Button>
             </View>
         </View>
+        </ScrollView>
     );
 };
 
@@ -206,5 +206,15 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop : 10,
+  },
+  refreshmentsContainer: {
+    flexDirection: 'row',
+    gap: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
+  refreshmentText: {
+    color: 'white',
   },
 });

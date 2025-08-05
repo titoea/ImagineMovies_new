@@ -43,6 +43,14 @@ export type IMainStackParamsList = {
     time: string[],
     date: string[],
     ticketImage: string,
+    refreshmentsToBuy?: {
+      id: string,
+      type: string,
+      name: string,
+      price: number,
+      quantity: number,
+    },
+    amountToPay?: number,
   }
 } & ITabStackParamsList;
 

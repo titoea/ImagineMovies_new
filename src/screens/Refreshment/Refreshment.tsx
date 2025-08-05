@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import {Picker} from '@react-native-picker/picker';
-import { IRefreshmentProps } from './interfaces';
+import { IRefreshmentProps, Item } from './interfaces';
 import Card from '../../components/Card/Card';
 import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { RefreshmentData1, RefreshmentData2, RefreshmentData5 } from '../../data/RefreshmentData';
@@ -18,15 +18,57 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}
     const [selectedDrinkRefreshment, setSelectedDrinkRefreshment] = useState<string>('soft drinks');
     const [foodPrice, setFoodPrice] = useState<number>();
     const [drinkPrice, setDrinkPrice] = useState<number>();
+    const [drinkToBuy, setDrinkToBuy] = useState<
+    {
+        id: string,
+        type: string,
+        name: string,
+        price: number,
+        quantity: number
+    }[]>([]);
+    const [foodToBuy, setFoodToBuy] = useState<
+    {
+        id: string,
+        type: string,
+        name: string,
+        price: number,
+        quantity: number
+    }[]>([]);
     const selectedCardSize = useSharedValue<number>(0);
     const unSelectedCardSize = useSharedValue<number>(0);
     const {popup} = usePaystack();
 
+    const finalTotal = useMemo(() => {
+        const total = foodPrice && drinkPrice ? foodPrice + drinkPrice : foodPrice ? foodPrice : drinkPrice ? drinkPrice : 0;
+        return total;
+    },[drinkPrice, foodPrice]);
+
+        const handleSuccess = useCallback(()=>{
+            const refreshmentsToBuy = foodToBuy.concat(drinkToBuy);
+            if(refreshmentsToBuy){
+                navigation.navigate('Ticket', {
+                seatArray: route.params.seatArray,
+                time: route.params.time,
+                date: route.params.date,
+                ticketImage: route.params.ticketImage,
+                refreshmentsToBuy: refreshmentsToBuy,
+                amountToPay: finalTotal,
+            });
+            }
+            else{
+                navigation.navigate('Ticket', {
+                seatArray: route.params.seatArray,
+                time: route.params.time,
+                date: route.params.date,
+                ticketImage: route.params.ticketImage,
+            });
+        }
+        },[drinkToBuy, finalTotal, foodToBuy, navigation, route.params.date, route.params.seatArray, route.params.ticketImage, route.params.time]);
         const payNow = useCallback((amount?: number) => {
             popup.checkout({
             email: 'titoeffiongakpan.992@gmail.com',
             amount: amount ? amount : 5000,
-            reference: 'TXN_1234566',
+            reference: 'TXN_1',
             plan: 'PLN_5owgxapjtoezx90',
             invoice_limit: 3,
             metadata: {
@@ -38,17 +80,12 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}
                 },
                 ],
             },
-            onSuccess: (res) =>  navigation.navigate('Ticket', {
-                seatArray: route.params.seatArray,
-                time: route.params.time,
-                date: route.params.date,
-                ticketImage: route.params.ticketImage,
-            }),
-            onCancel: () => console.log('User cancelled'),
+            onSuccess: handleSuccess,
+            onCancel: handleSuccess,
             onLoad: (res) => console.log('WebView Loaded:', res),
             onError: (err) => console.log('WebView Error:', err),
             });
-        },[popup]);
+        },[handleSuccess, popup]);
 
     const handlePress = useCallback((id: string) =>{
         setSelectedCard(id);
@@ -65,17 +102,13 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}
         payNow(10000);
     },[payNow]);
 
-    const finalTotal = useMemo(() => {
-        const total = foodPrice && drinkPrice ? foodPrice + drinkPrice : foodPrice ? foodPrice : drinkPrice ? drinkPrice : 0;
-        return total;
-    },[drinkPrice, foodPrice]);
     const renderFoodItem = useCallback((item, index)=>{
-        return  <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateFoodPrice}/>;
+        return  <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateFoodPrice} refreshmentsPicked={foodSelection}/>;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[selectedCard]);
 
     const renderDrinkItem = useCallback((item, index)=>{
-        return <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateDrinkPrice}/>;
+        return <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateDrinkPrice} refreshmentsPicked={drinkSelection}/>;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[selectedCard]);
 
@@ -84,6 +117,12 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}
     },[]);
     const calculateDrinkPrice = useCallback((data:number)=>{
         setDrinkPrice(data);
+    },[]);
+    const foodSelection = useCallback((data: any[])=>{
+        setFoodToBuy(data);
+    },[]);
+    const drinkSelection = useCallback((data: any[])=>{
+        setDrinkToBuy(data);
     },[]);
 
  return (
@@ -100,7 +139,7 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}
         <Picker.Item label="Chocolate Bars" value="chocolate bars" style={{backgroundColor: 'black', color: 'white'}}/>
         </Picker>
         <View style = {styles.refreshment1}>
-        <FlatList data={selectedFoodRefreshment === 'popcorn' ? RefreshmentData1 : RefreshmentData2} renderItem={({item, index}) => <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateFoodPrice}/>}
+        <FlatList data={selectedFoodRefreshment === 'popcorn' ? RefreshmentData1 : RefreshmentData2} renderItem={({item, index}) => <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateFoodPrice} refreshmentsPicked={foodSelection}/>}
             horizontal
             pagingEnabled
             keyExtractor={item => item.id}
@@ -117,9 +156,10 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}
         <Picker.Item label="Water" value="water" style={{backgroundColor: 'black', color: 'white'}} />
         </Picker>
         <View>
-            <FlatList data={RefreshmentData5} renderItem={({item, index}) => <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateDrinkPrice}/>}
+            <FlatList data={RefreshmentData5} renderItem={({item, index}) => <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateDrinkPrice} refreshmentsPicked={drinkSelection}/>}
             horizontal
             pagingEnabled
+            keyExtractor={item => item.id}
             />
         </View>
         <View style={styles.bottomContainer}>

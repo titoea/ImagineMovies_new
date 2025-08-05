@@ -22,36 +22,40 @@ const Card : ICardProps = function Card({
     selectedCardSize,
     unselectedCardSize,
     cummulativeTotalPrice,
+    refreshmentsPicked,
 }){
-    const [quantity, setquantity] = useState<number>(1);
-    const [refreshmentPrices, setRefreshmentPrices] = useState<IRefreshmentDataForCardProps>(RefreshmentDataForCard);
+    const [quantity, setquantity] = useState<number>(0);
+    const [refreshmentDetails, setRefreshmentDetails] = useState<IRefreshmentDataForCardProps>(RefreshmentDataForCard);
 
     const animatedProps = useAnimatedStyle(() => ({
         padding: withTiming(selectedCard === id ? selectedCardSize.value : unselectedCardSize.value),
     }));
 
     const handleAdd = useCallback(() =>{
-        setRefreshmentPrices(prevItems => prevItems.map(mapItem => mapItem.id === selectedCard ? {...mapItem, quantity : quantity + 1 } : mapItem));
+        setRefreshmentDetails(prevItems => prevItems.map(mapItem => mapItem.id === selectedCard ? {...mapItem, quantity : quantity + 1 } : mapItem));
         setquantity(quantity + 1);
         return null;
     },[quantity, selectedCard]);
 
     const handleRemove = useCallback(() => {
-        if(quantity <= 0 ){
+        const cantRemove = refreshmentDetails.find(refreshments => refreshments.id === selectedCard ? refreshments.quantity
+            === 0 : false
+        );
+        if(cantRemove){
             return;
         }
         setquantity(quantity - 1);
-         setRefreshmentPrices(prevItems => prevItems.map(mapItem => mapItem.id === selectedCard ? {...mapItem, quantity : quantity - 1 } : mapItem));
+         setRefreshmentDetails(prevItems => prevItems.map(mapItem => mapItem.id === selectedCard ? {...mapItem, quantity : quantity - 1 } : mapItem));
         return null;
-    }, [quantity, selectedCard]);
+    }, [quantity, refreshmentDetails, selectedCard]);
 
     const totalPrice = useMemo(() =>{
         let total = 0;
-        refreshmentPrices.forEach((refreshmentObj, index) =>{
+        refreshmentDetails.forEach((refreshmentObj, index) =>{
             total = total + refreshmentObj.quantity * refreshmentObj.price;
         });
         return total;
-    },[refreshmentPrices]);
+    },[refreshmentDetails]);
 
     const sendPrice = useCallback(()=>{
         cummulativeTotalPrice(totalPrice);
@@ -59,7 +63,12 @@ const Card : ICardProps = function Card({
 
     useEffect(()=>{
         sendPrice();
-    },[refreshmentPrices, sendPrice, totalPrice]);
+    },[refreshmentDetails, sendPrice, totalPrice]);
+
+    useEffect(() =>{
+        const finalPickedRefreshments = refreshmentDetails.filter(refreshments => refreshments.quantity > 0);
+        refreshmentsPicked(finalPickedRefreshments);
+    },[refreshmentDetails, refreshmentsPicked]);
     return (
         <View style={styles.container} >
             <Animated.View style={styles.mainIconStyle} animatedProps={animatedProps}>

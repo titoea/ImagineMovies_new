@@ -12,4 +12,10 @@ export enum cardName {
     pepsi = 'PEPSI'
 }
 export type ICardProps = React.FC<{item:Item, name: string, price: string, index: number, id: string, handlePress: () => null,
-    selectedCard: string | undefined, selectedCardSize: SharedValue<number>, unselectedCardSize: SharedValue<number>, cummulativeTotalPrice: (price: number)=>any}>;
+    selectedCard: string | undefined, selectedCardSize: SharedValue<number>, unselectedCardSize: SharedValue<number>, cummulativeTotalPrice: (price: number)=>any,  refreshmentsPicked: (data: {
+  id: string,
+  type: string,
+  name: string,
+  price: number,
+  quantity: number,
+}[])=>void}>;
