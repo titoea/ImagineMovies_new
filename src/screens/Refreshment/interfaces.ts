@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ITabStackParamsList } from '../../navigations/interfaces';
+import { IMainStackParamsList, ITabStackParamsList } from '../../navigations/interfaces';
 
 export type IRefreshmentProps = React.FC<
-  NativeStackScreenProps<ITabStackParamsList, 'Refreshment'> & {}
+  NativeStackScreenProps<IMainStackParamsList, 'Refreshment'> & {}
 >;
 
 export type Item = {

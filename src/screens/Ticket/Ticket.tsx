@@ -14,8 +14,8 @@ const Ticket = function Ticket({navigation, route} : any){
         popup.checkout({
         email: 'titoeffiongakpan.992@gmail.com',
         amount: 5000,
-        reference: 'TXN_123456',
-        plan: 'PLN_ey0ff1wo1ccik22',
+        reference: 'TXN_1234566',
+        plan: 'PLN_5owgxapjtoezx90',
         invoice_limit: 3,
         metadata: {
             custom_fields: [

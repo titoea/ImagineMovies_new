@@ -24,6 +24,7 @@ import RefreshmentSVG from '../../assets/icons/refreshment.svg';
 import AccountSVG from '../../assets/icons/account.svg';
 import ClockSVG from '../../assets/icons/clock.svg';
 import SearchSVG from '../../assets/icons/search.svg';
+import TicketsSVG from '../../assets/icons/tickets.svg';
 import {IconProps} from './interfaces';
 import { Pressable } from 'react-native';
 
@@ -316,6 +317,19 @@ export const ClockIcon: React.FC<IconProps> = function ClockIcon({color, size, o
 export const SearchIcon: React.FC<IconProps> = function SearchIcon({color, size, opacity, style}){
   return(
     <SearchSVG
+    fill={color}
+    width={size}
+    height={size}
+    opacity={opacity}
+    style={style}
+    stroke={color}
+    />
+  );
+};
+
+export const TicketsIcon: React.FC<IconProps> = function TicketsIcon({color, size, opacity, style}){
+  return(
+    <TicketsSVG
     fill={color}
     width={size}
     height={size}

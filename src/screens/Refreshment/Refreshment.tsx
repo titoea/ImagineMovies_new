@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import {Picker} from '@react-native-picker/picker';
 import { IRefreshmentProps } from './interfaces';
@@ -7,11 +7,12 @@ import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { RefreshmentData1, RefreshmentData2, RefreshmentData5 } from '../../data/RefreshmentData';
 import {useSharedValue } from 'react-native-reanimated';
 import Button from '../../components/Button/Button';
+import { usePaystack } from 'react-native-paystack-webview';
 
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
-const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
+const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}) {
     const [selectedCard, setSelectedCard] = useState<string>();
     const [selectedFoodRefreshment, setSelectedFoodRefreshment] = useState<string>('popcorn');
     const [selectedDrinkRefreshment, setSelectedDrinkRefreshment] = useState<string>('soft drinks');
@@ -19,6 +20,35 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
     const [drinkPrice, setDrinkPrice] = useState<number>();
     const selectedCardSize = useSharedValue<number>(0);
     const unSelectedCardSize = useSharedValue<number>(0);
+    const {popup} = usePaystack();
+
+        const payNow = useCallback((amount?: number) => {
+            popup.checkout({
+            email: 'titoeffiongakpan.992@gmail.com',
+            amount: amount ? amount : 5000,
+            reference: 'TXN_1234566',
+            plan: 'PLN_5owgxapjtoezx90',
+            invoice_limit: 3,
+            metadata: {
+                custom_fields: [
+                {
+                    display_name: 'Order ID',
+                    variable_name: 'order_id',
+                    value: 'OID1234',
+                },
+                ],
+            },
+            onSuccess: (res) =>  navigation.navigate('Ticket', {
+                seatArray: route.params.seatArray,
+                time: route.params.time,
+                date: route.params.date,
+                ticketImage: route.params.ticketImage,
+            }),
+            onCancel: () => console.log('User cancelled'),
+            onLoad: (res) => console.log('WebView Loaded:', res),
+            onError: (err) => console.log('WebView Error:', err),
+            });
+        },[popup]);
 
     const handlePress = useCallback((id: string) =>{
         setSelectedCard(id);
@@ -27,9 +57,18 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
         return null;
     },[selectedCardSize, unSelectedCardSize]);
 
-    const handleOrder = useCallback(()=>{
-    },[]);
+    const handleSkip = useCallback(() => {
+        payNow();
+        },[payNow]);
 
+    const handleOrder = useCallback(()=>{
+        payNow(10000);
+    },[payNow]);
+
+    const finalTotal = useMemo(() => {
+        const total = foodPrice && drinkPrice ? foodPrice + drinkPrice : foodPrice ? foodPrice : drinkPrice ? drinkPrice : 0;
+        return total;
+    },[drinkPrice, foodPrice]);
     const renderFoodItem = useCallback((item, index)=>{
         return  <Card item={item} name={item.name} price={item.price} index={index} id={item.id} handlePress={()=>handlePress(item.id)} selectedCard={selectedCard} selectedCardSize={selectedCardSize} unselectedCardSize={unSelectedCardSize} cummulativeTotalPrice={calculateFoodPrice}/>;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,8 +123,9 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation}) {
             />
         </View>
         <View style={styles.bottomContainer}>
-            <Text style={styles.totalText}>Total: {foodPrice && drinkPrice ? foodPrice + drinkPrice : foodPrice ? foodPrice : drinkPrice ? drinkPrice : 0}.00</Text>
+            <Text style={styles.totalText}>Total: {finalTotal.toFixed(2)}</Text>
             <Button onPress={handleOrder}>Order now</Button>
+            <Button onPress={handleSkip} style={styles.button}>Skip Refreshment</Button>
         </View>
     </ScrollView>
  );
@@ -109,4 +149,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         color: 'white',
     },
+    button: {
+        marginTop: 20,
+    }
 });

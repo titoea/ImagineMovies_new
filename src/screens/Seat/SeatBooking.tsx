@@ -102,7 +102,7 @@ const SeatBooking = function SeatBooking({
             }catch(error){
                 console.log('something went wrong while storing in BookSeats function');
             }
-             navigation.navigate('Ticket', {
+             navigation.navigate('Refreshment', {
             seatArray: selectedSeatArray,
             time: timeArray[selectedTimeIndex],
             date: dateArray[selectedDateIndex],

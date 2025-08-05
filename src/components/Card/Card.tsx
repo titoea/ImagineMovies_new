@@ -59,7 +59,6 @@ const Card : ICardProps = function Card({
 
     useEffect(()=>{
         sendPrice();
-        console.log(refreshmentPrices);
     },[refreshmentPrices, sendPrice, totalPrice]);
     return (
         <View style={styles.container} >
