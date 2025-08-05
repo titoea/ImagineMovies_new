@@ -60,7 +60,7 @@ const generateSeats = () =>{
 };
 const SeatBooking = function SeatBooking({
     navigation,
-    route: {params: {backdrop}},
+    route: {params: {backdrop, movieDetails}},
 }){
     const [dateArray, setDateArray] = useState<any[]>(generateDate());
     const [selectedDateIndex, setSelectedDateIndex] = useState<any>();
@@ -107,11 +107,12 @@ const SeatBooking = function SeatBooking({
             time: timeArray[selectedTimeIndex],
             date: dateArray[selectedDateIndex],
             ticketImage: backdrop,
+            movieDetails: movieDetails,
         });
         }else{
             ToastAndroid.showWithGravity("Please select seats, Date and Time of the movie", ToastAndroid.SHORT, ToastAndroid.BOTTOM);
         }
-    },[backdrop, dateArray, navigation, selectedDateIndex, selectedSeatArray, selectedTimeIndex]);
+    },[backdrop, dateArray, movieDetails, navigation, selectedDateIndex, selectedSeatArray, selectedTimeIndex]);
     return(
         <ScrollView style={styles.container} bounces={false} showsVerticalScrollIndicator={false}>
             <View>

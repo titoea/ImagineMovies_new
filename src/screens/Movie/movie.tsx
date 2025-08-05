@@ -34,8 +34,8 @@ const Movie: IMovieProps = function Movie({navigation,route: {params : {movieIte
         return navigation.navigate('MoviePreview',{movie_id: movieItem.id});
     },[movieItem.id, navigation]);
 
-    const handleNavigateToRefreshment = () => {
-    navigation.navigate('SeatBooking', {backdrop: imageBaseURL + '/t/p/w500' + movieItem.poster_path});
+    const handleNavigateToBooking = () => {
+    navigation.navigate('SeatBooking', {backdrop: imageBaseURL + '/t/p/w500' + movieItem.poster_path, movieDetails: movieItem});
   };
     useEffect(() => {
       //initialize list
@@ -70,7 +70,7 @@ const Movie: IMovieProps = function Movie({navigation,route: {params : {movieIte
                 <Text style={styles.synopsisText}>{movieItem.overview}</Text>
             </View>
             <View style={styles.buttonContainer}>
-                <Button onPress={handleNavigateToRefreshment}>Get Tickets</Button>
+                <Button onPress={handleNavigateToBooking}>Get Tickets</Button>
             </View>
             <View style={styles.reviewsContainer}>
                 <Text style={styles.reviewsText}>Reviews</Text>

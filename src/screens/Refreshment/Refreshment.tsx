@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import {Picker} from '@react-native-picker/picker';
 import { IRefreshmentProps, Item } from './interfaces';
@@ -8,6 +8,9 @@ import { RefreshmentData1, RefreshmentData2, RefreshmentData5 } from '../../data
 import {useSharedValue } from 'react-native-reanimated';
 import Button from '../../components/Button/Button';
 import { usePaystack } from 'react-native-paystack-webview';
+import UserContext from '../../providers/UserProvider/UserContext';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import { TicketType } from '../../providers/UserProvider/interfaces';
 
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
@@ -36,6 +39,7 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}
     }[]>([]);
     const selectedCardSize = useSharedValue<number>(0);
     const unSelectedCardSize = useSharedValue<number>(0);
+    const {tickets, populateTicketsList} = useContext(UserContext);
     const {popup} = usePaystack();
 
     const finalTotal = useMemo(() => {
@@ -43,10 +47,22 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}
         return total;
     },[drinkPrice, foodPrice]);
 
+    const saveTickets = useCallback(async(ticketData: TicketType[])=>{
+        populateTicketsList(ticketData);
+        try{
+            await EncryptedStorage.setItem('tickets', JSON.stringify(ticketData));
+         }catch(error){
+            console.log('something went wrong while storing in BookSeats function');
+        }
+    },[populateTicketsList]);
+
         const handleSuccess = useCallback(()=>{
+            saveTickets([{movieName: route.params.movieDetails.title, movieTime: String(route.params.time), movieDate: String(route.params.date.day) + ' ' + String(route.params.date.date), movieImage: route.params.ticketImage,
+    quantity: route.params.seatArray.length}]);
+
             const refreshmentsToBuy = foodToBuy.concat(drinkToBuy);
             if(refreshmentsToBuy){
-                navigation.navigate('Ticket', {
+               return navigation.navigate('Ticket', {
                 seatArray: route.params.seatArray,
                 time: route.params.time,
                 date: route.params.date,
@@ -56,14 +72,14 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}
             });
             }
             else{
-                navigation.navigate('Ticket', {
+            return navigation.navigate('Ticket', {
                 seatArray: route.params.seatArray,
                 time: route.params.time,
                 date: route.params.date,
                 ticketImage: route.params.ticketImage,
             });
         }
-        },[drinkToBuy, finalTotal, foodToBuy, navigation, route.params.date, route.params.seatArray, route.params.ticketImage, route.params.time]);
+        },[drinkToBuy, finalTotal, foodToBuy, navigation, route.params.date, route.params.movieDetails.title, route.params.seatArray, route.params.ticketImage, route.params.time, saveTickets]);
         const payNow = useCallback((amount?: number) => {
             popup.checkout({
             email: 'titoeffiongakpan.992@gmail.com',

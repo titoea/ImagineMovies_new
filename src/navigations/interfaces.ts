@@ -31,12 +31,14 @@ export type IMainStackParamsList = {
   };
   SeatBooking : {
     backdrop: string
+    movieDetails: movieItemProps
   },
   Refreshment: {
     seatArray: any[],
     time: string[],
     date: string[],
     ticketImage: string,
+    movieDetails: movieItemProps
   }
   Ticket : {
     seatArray: any[],
@@ -57,6 +59,7 @@ export type IMainStackParamsList = {
 export type ITabStackParamsList = {
   Home: undefined;
   Search: undefined;
-  TicketList: undefined;
+  TicketList: {
+  };
   Account: undefined;
 }

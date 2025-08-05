@@ -1,11 +1,12 @@
 import React , { useCallback, useEffect, useState } from 'react';
-import { IUserProviderProps } from './interfaces';
+import { IUserProviderProps, TicketType } from './interfaces';
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, FirebaseAuthTypes, signInWithEmailAndPassword} from '@react-native-firebase/auth';
 import UserContext from './UserContext';
 
 const UserProvider: IUserProviderProps  = function UserProvider({children}){
     const [initializing, setInitializing] = useState<boolean>(true);
     const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
+    const [tickets, setTickets] = useState<TicketType[]>([]);
  
     const auth = getAuth();
 
@@ -54,6 +55,10 @@ const UserProvider: IUserProviderProps  = function UserProvider({children}){
     }, [auth]);
     const loginWithGoogle = useCallback(() => {}, []);
     const logout = useCallback(() => {}, []);
+
+    const populateTicketsList = useCallback((ticketData:TicketType[])=>{
+      setTickets([ticketData, ...tickets]);
+    },[tickets]);
      return (
     <UserContext.Provider
       value={{
@@ -62,6 +67,7 @@ const UserProvider: IUserProviderProps  = function UserProvider({children}){
        loginWithEmail,
        loginWithGoogle,
        signUpWithEmail,
+       populateTicketsList,
        logout,
       }}>
       {children}

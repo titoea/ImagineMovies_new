@@ -1,5 +1,4 @@
 import { FlatList, StyleSheet, View } from 'react-native';
-import { MovieSlider } from '../../data/MovieSliderData';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import ComingSoonSliderItem from './ComingSoonSliderItem';
@@ -12,6 +11,9 @@ const ComingSoonSlider = function ComingSoonSlider () {
     const {configuration} = useConfiguration();
     const cancelHttp = useRef<Canceler>();
     const [list, setList] = useState<IResults[]>();
+    const flatListRef = useRef(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const interval = 2000;
 
     const ComingSoonData = useCallback( async () =>{
         const response = await ComingSoonAPi({
@@ -26,6 +28,18 @@ const ComingSoonSlider = function ComingSoonSlider () {
          return setList(response.data.results);
     }, []);
     useEffect(() => {
+          if (list){
+            const timer = setInterval(() => {
+              const nextIndex = (currentIndex + 1) % list?.length;
+              setCurrentIndex(nextIndex);
+              if(flatListRef){
+              flatListRef?.current?.scrollToIndex({index: nextIndex, animated: true});
+             }
+            }, interval);
+            return () => clearInterval(timer);
+          }
+        },[currentIndex, list]);
+    useEffect(() => {
           //initialize list
           ComingSoonData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,6 +52,8 @@ const ComingSoonSlider = function ComingSoonSlider () {
             showsHorizontalScrollIndicator={false}
             style={{paddingVertical: 5}}
             contentContainerStyle={styles.nowShowingContainer}
+            pagingEnabled
+            ref={flatListRef}
             />
         </View>
     );

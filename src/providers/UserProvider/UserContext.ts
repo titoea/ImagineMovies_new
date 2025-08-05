@@ -68,12 +68,14 @@ const UserContext = createContext<IUserContext>({
       },
       updateProfile: function (updates: FirebaseAuthTypes.UpdateProfile): Promise<void> {
           throw new Error('Function not implemented.');
-      }
+      },
   },
   initializing: false,
+  tickets: [],
   loginWithEmail: ()=>{},
   loginWithGoogle: ()=>{},
   signUpWithEmail: ()=>{},
+  populateTicketsList: () =>{},
   logout: ()=>{},
 });
 
