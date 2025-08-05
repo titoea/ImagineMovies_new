@@ -12,7 +12,6 @@ import { CommonActions } from '@react-navigation/native';
 const Ticket: ITicketProps = function Ticket({navigation, route} : any){
     const [ticketData, setTicketData] = useState<any>(route.params);
     const goToHome = useCallback(()=>{
-        console.log('here');
         navigation.dispatch(
             CommonActions.reset({
                 index: 1,
@@ -37,7 +36,6 @@ const Ticket: ITicketProps = function Ticket({navigation, route} : any){
     if (ticketData === undefined || ticketData ===  null){
         return(<View style={styles.container} />);
     }
-    console.log(ticketData.refreshmentsToBuy);
     return(
         <ScrollView>
         <View style={styles.ticketContainer}>

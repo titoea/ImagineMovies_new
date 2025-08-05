@@ -46,19 +46,10 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}
         const total = foodPrice && drinkPrice ? foodPrice + drinkPrice : foodPrice ? foodPrice : drinkPrice ? drinkPrice : 0;
         return total;
     },[drinkPrice, foodPrice]);
-
-    const saveTickets = useCallback(async(ticketData: TicketType[])=>{
-        populateTicketsList(ticketData);
-        try{
-            await EncryptedStorage.setItem('tickets', JSON.stringify(ticketData));
-         }catch(error){
-            console.log('something went wrong while storing in BookSeats function');
-        }
-    },[populateTicketsList]);
-
+    console.log(tickets);
         const handleSuccess = useCallback(()=>{
-            saveTickets([{movieName: route.params.movieDetails.title, movieTime: String(route.params.time), movieDate: String(route.params.date.day) + ' ' + String(route.params.date.date), movieImage: route.params.ticketImage,
-    quantity: route.params.seatArray.length}]);
+            populateTicketsList({movieName: route.params.movieDetails.title, movieTime: String(route.params.time), movieDate: String(route.params.date.day) + ' ' + String(route.params.date.date), movieImage: route.params.ticketImage,
+    quantity: route.params.seatArray.length});
 
             const refreshmentsToBuy = foodToBuy.concat(drinkToBuy);
             if(refreshmentsToBuy){
@@ -79,12 +70,12 @@ const Refreshment : IRefreshmentProps = function Refreshment({navigation, route}
                 ticketImage: route.params.ticketImage,
             });
         }
-        },[drinkToBuy, finalTotal, foodToBuy, navigation, route.params.date, route.params.movieDetails.title, route.params.seatArray, route.params.ticketImage, route.params.time, saveTickets]);
+        },[drinkToBuy, finalTotal, foodToBuy, navigation, populateTicketsList, route.params.date, route.params.movieDetails.title, route.params.seatArray, route.params.ticketImage, route.params.time]);
         const payNow = useCallback((amount?: number) => {
             popup.checkout({
             email: 'titoeffiongakpan.992@gmail.com',
             amount: amount ? amount : 5000,
-            reference: 'TXN_1',
+            reference: 'TXN_2',
             plan: 'PLN_5owgxapjtoezx90',
             invoice_limit: 3,
             metadata: {

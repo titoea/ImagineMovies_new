@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ITicketProps } from './interfaces';
-import { TicketType } from '../../providers/UserProvider/interfaces';
-import EncryptedStorage from 'react-native-encrypted-storage';
+
 
 const width = Dimensions.get('window').width;
 

@@ -26,7 +26,6 @@ const Movie: IMovieProps = function Movie({navigation,route: {params : {movieIte
           if (!response.data){
             return;
           }
-          console.log(response.data.results);
          return setReviews(response.data.results);
     }, [movieItem.id]);
 

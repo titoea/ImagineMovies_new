@@ -2,12 +2,12 @@ import React , { useCallback, useEffect, useState } from 'react';
 import { IUserProviderProps, TicketType } from './interfaces';
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, FirebaseAuthTypes, signInWithEmailAndPassword} from '@react-native-firebase/auth';
 import UserContext from './UserContext';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const UserProvider: IUserProviderProps  = function UserProvider({children}){
     const [initializing, setInitializing] = useState<boolean>(true);
     const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
-    const [tickets, setTickets] = useState<TicketType[]>([]);
- 
+    const [tickets, setTickets] = useState<TicketType[]>();
     const auth = getAuth();
 
     const handleAuthStateChanged = useCallback((authUser: FirebaseAuthTypes.User | null)=>{
@@ -55,14 +55,19 @@ const UserProvider: IUserProviderProps  = function UserProvider({children}){
     }, [auth]);
     const loginWithGoogle = useCallback(() => {}, []);
     const logout = useCallback(() => {}, []);
-
-    const populateTicketsList = useCallback((ticketData:TicketType[])=>{
-      setTickets([ticketData, ...tickets]);
-    },[tickets]);
+    const populateTicketsList = useCallback(async(ticketData: TicketType)=>{
+          setTickets(tickets ? [ ...tickets, ticketData] : [ticketData]);
+            try{
+                await EncryptedStorage.setItem('tickets', JSON.stringify(tickets ? [...tickets, ticketData] : [ticketData]));
+             }catch(error){
+                console.log('something went wrong while storing in BookSeats function');
+            }
+        },[tickets]);
      return (
     <UserContext.Provider
       value={{
        user: user,
+       tickets: tickets,
        initializing: initializing,
        loginWithEmail,
        loginWithGoogle,
