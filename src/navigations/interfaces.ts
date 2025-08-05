@@ -58,4 +58,5 @@ export type ITabStackParamsList = {
   Home: undefined;
   Search: undefined;
   TicketList: undefined;
+  Account: undefined;
 }
