@@ -1,14 +1,35 @@
-import React, {useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import Button from '../../components/Button/Button';
 import CustomTextInput from '../../components/CustomTextInput/TextInput';
 import CheckBox from '@react-native-community/checkbox';
 import {ILogInProps} from './interfaces';
 import {CommonActions} from '@react-navigation/native';
+import UserContext from '../../providers/UserProvider/UserContext';
 
 const LogIn: ILogInProps = function LogIn({navigation}) {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const background_image = require('../../assets/images/background-img.jpg');
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+
+   const userContext = useContext(UserContext);
+
+  const handleLogin = useCallback(()=>{
+    userContext.loginWithEmail(String(email), String(password));
+    return navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [
+                    {name: 'Auth',
+                      params:
+                      {
+                        screen: 'CustomDrawerNavigator',
+                      },
+                    }],
+                }),
+              );
+  },[email, navigation, password, userContext]);
 
   return (
     <View style={styles.rootContainer}>
@@ -20,6 +41,10 @@ const LogIn: ILogInProps = function LogIn({navigation}) {
             <CustomTextInput
               style={styles.textInputLabel}
               placeholder="Enter your email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType='email-address'
+              autoCapitalize='none'
             />
           </View>
           {/* eslint-disable-next-line react-native/no-inline-styles*/}
@@ -28,11 +53,14 @@ const LogIn: ILogInProps = function LogIn({navigation}) {
             <CustomTextInput
               style={styles.textInputLabel}
               placeholder="Enter your password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
             />
           </View>
           <View style={styles.endActionsStyle}>
             <View style={styles.checkBoxStyle}>
-              <CheckBox
+              {/* <CheckBox
                 disabled={false}
                 value={toggleCheckBox}
                 boxType="square"
@@ -42,7 +70,7 @@ const LogIn: ILogInProps = function LogIn({navigation}) {
                 onCheckColor="#D9C14A"
                 tintColors={{true: '#161819', false: '#161819'}}
                 onValueChange={newValue => setToggleCheckBox(newValue)}
-              />
+              /> */}
               <Text style={styles.rememberMeText}>Remember me</Text>
             </View>
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
@@ -50,14 +78,7 @@ const LogIn: ILogInProps = function LogIn({navigation}) {
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            onPress={() => {
-              navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{name: 'Home'}],
-                }),
-              );
-            }}
+            onPress={() => handleLogin()}
             style={styles.buttonStyle}>
             Log In
           </Button>

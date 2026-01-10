@@ -1,11 +1,17 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {ImageBackground, Pressable, StyleSheet, Text, View} from 'react-native';
 import Button from '../../components/Button/Button';
 import CustomTextInput from '../../components/CustomTextInput/TextInput';
 import {ISignUpProps} from './interfaces';
+import UserContext from '../../providers/UserProvider/UserContext';
 
 const SignUp: ISignUpProps = function SignUp({navigation}) {
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
   const background_image = require('../../assets/images/background-img.jpg');
+  const userContext = useContext(UserContext);
 
   const handleLoginPress = useCallback(() => {
     navigation.navigate('LogIn');
@@ -21,6 +27,9 @@ const SignUp: ISignUpProps = function SignUp({navigation}) {
             <CustomTextInput
               style={styles.textInputLabel}
               placeholder="Enter your name"
+              value={name}
+              onChangeText={setName}
+              keyboardType='name-phone-pad'
             />
           </View>
           <View style={styles.textInputContainer}>
@@ -28,6 +37,10 @@ const SignUp: ISignUpProps = function SignUp({navigation}) {
             <CustomTextInput
               style={styles.textInputLabel}
               placeholder="Enter your email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType='email-address'
+              autoCapitalize='none'
             />
           </View>
           <View style={styles.textInputContainer}>
@@ -35,11 +48,15 @@ const SignUp: ISignUpProps = function SignUp({navigation}) {
             <CustomTextInput
               style={styles.textInputLabel}
               placeholder="Enter your password"
+              value={password}
+              onChangeText={setPassword}
+              keyboardType='visible-password'
+              secureTextEntry
             />
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <Button style={styles.buttonStyle}>Sign Up</Button>
+          <Button style={styles.buttonStyle} onPress={() => userContext.signUpWithEmail(String(email),String(password))}>Sign Up</Button>
           <View style={styles.logInPromptContainer}>
             <Text style={styles.logInPromptText}>
               Already have an account?{' '}
